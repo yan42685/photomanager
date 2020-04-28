@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
     @Override
-    public boolean modifyInfo(UserInfoEnum field) {
+    public boolean modifyInfo(UserInfoEnum field, String data) {
         // TODO: 如果用户登录了 那么应该有一个util方法获取当前用户 id
         return true;
     }

@@ -17,7 +17,7 @@ public class UserController {
     UserService userService;
 
     @GetMapping("set")
-    public JsonWrapper<Boolean> modifyInfo(UserInfoEnum field) {
-        return new JsonWrapper<>(userService.modifyInfo(field));
+    public JsonWrapper<Boolean> modifyInfo(UserInfoEnum field, String data) {
+        return new JsonWrapper<>(userService.modifyInfo(field, data));
     }
 }

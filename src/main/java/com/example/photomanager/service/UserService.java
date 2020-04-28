@@ -8,6 +8,6 @@ public interface UserService extends IService<User> {
     /**
      * 修改用户信息
      */
-    boolean modifyInfo(UserInfoEnum field);
+    boolean modifyInfo(UserInfoEnum field, String data);
 
 }
