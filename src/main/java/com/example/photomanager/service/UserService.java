@@ -12,8 +12,5 @@ public interface UserService extends IService<User> {
      */
     boolean modifyInfo(UserInfoEnum field, String data);
 
-    /**
-     * 注册, 返回的头像是默认图片
-     */
     UserInfo register(RegistryInfo info);
 }
