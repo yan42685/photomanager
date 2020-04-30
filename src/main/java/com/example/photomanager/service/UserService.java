@@ -13,4 +13,8 @@ public interface UserService extends IService<User> {
     boolean modifyInfo(UserInfoEnum field, String data);
 
     UserInfo register(RegistryInfo info);
+
+    boolean checkUsername(String username);
+
+    boolean checkEmail(String email);
 }
