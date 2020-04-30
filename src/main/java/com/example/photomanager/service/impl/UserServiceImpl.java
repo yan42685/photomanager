@@ -11,11 +11,11 @@ import com.example.photomanager.enums.UserInfoEnum;
 import com.example.photomanager.mapper.UserMapper;
 import com.example.photomanager.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
@@ -35,6 +35,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      */
     @Override
     public UserInfo register(RegistryInfo info) {
+        // 进行Sha256加密,并转为16进制
+        Sha256Hash sha256Hash = new Sha256Hash(info.getPassword());
+        info.setPassword(sha256Hash.toHex());
         User user = new User();
         BeanUtils.copyProperties(info,user);
         user.setCreateTime(LocalDateTime.now());
