@@ -16,6 +16,6 @@ public class MailServiceImplTest {
 
     @Test
     public void test(){
-        qz_mailService.sendSimpleMail("541099558@qq.com","验证码","123456");
+        qz_mailService.sendSimpleMail("541099558@qq.com","123456");
     }
 }
