@@ -33,9 +33,9 @@ public class GlobalExceptionHandler {
     public JsonWrapper<String> handleUnknownException(Exception e, HttpServletRequest request) {
         int errorCode = ExceptionEnum.UNKNOWN_EXCEPTION.getErrorCode();
         String errorMessage = ExceptionEnum.UNKNOWN_EXCEPTION.getErrorMsg();
-        String stackTrack = Arrays.toString(e.getStackTrace());
-        log.error("url: {}    msg: {}", request.getRequestURL(), stackTrack);
-        return new JsonWrapper<>(errorCode, errorMessage + stackTrack);
+        String stackTrace = Arrays.toString(e.getStackTrace());
+        log.error("url: {}    msg: {}", request.getRequestURL(), stackTrace);
+        return new JsonWrapper<>(errorCode, errorMessage);
     }
 
     /**
@@ -44,9 +44,9 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)  // 400状态码
     @ExceptionHandler(KnownException.class)
     public JsonWrapper<String> handleKnownException(KnownException e, HttpServletRequest request) {
-        String stackTrack = Arrays.toString(e.getStackTrace());
-        log.error("url: {}    msg: {}", request.getRequestURL(), e.getMessage() + stackTrack);
-        return new JsonWrapper<>(e.getErrorCode(), "已知异常: " + e.getMessage() + stackTrack);
+        String stackTrace = Arrays.toString(e.getStackTrace());
+        log.error("url: {}    msg: {}", request.getRequestURL(), e.getMessage() + stackTrace);
+        return new JsonWrapper<>(e.getErrorCode(), "已知异常: " + e.getMessage() + stackTrace);
     }
 
     /**
