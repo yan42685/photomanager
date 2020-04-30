@@ -13,7 +13,7 @@ import java.util.List;
 public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements AlbumService {
 
     @Override
-    public List<Album> getCurrentAlbum() {
+    public List<AlbumInfo> getCurrentAlbum() {
         return null;
     }
 

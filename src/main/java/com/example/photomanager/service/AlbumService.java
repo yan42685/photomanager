@@ -16,7 +16,7 @@ public interface AlbumService extends IService<Album> {
     /**
      * @return 获取当前用户的所有相册
      */
-    List<Album> getCurrentAlbum();
+    List<AlbumInfo> getCurrentAlbum();
 
     Boolean createAlbum(AlbumInfo albumInfo);
 

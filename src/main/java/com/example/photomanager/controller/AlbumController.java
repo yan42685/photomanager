@@ -26,7 +26,7 @@ public class AlbumController {
 
     @ApiOperation("返回当前用户的所有相册")
     @GetMapping("/")
-    public JsonWrapper<List<Album>> getCurrentAlbum() {
+    public JsonWrapper<List<AlbumInfo>> getCurrentAlbum() {
         return new JsonWrapper<>(albumService.getCurrentAlbum());
     }
 
