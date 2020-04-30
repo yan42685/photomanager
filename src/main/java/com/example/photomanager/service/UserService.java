@@ -1,7 +1,9 @@
 package com.example.photomanager.service;
 
+import com.example.photomanager.bean.dto.RegistryInfo;
 import com.example.photomanager.bean.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.photomanager.bean.vo.UserInfo;
 import com.example.photomanager.enums.UserInfoEnum;
 
 public interface UserService extends IService<User> {
@@ -10,4 +12,5 @@ public interface UserService extends IService<User> {
      */
     boolean modifyInfo(UserInfoEnum field, String data);
 
+    UserInfo register(RegistryInfo info);
 }
