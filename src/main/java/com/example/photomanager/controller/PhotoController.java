@@ -1,5 +1,6 @@
 package com.example.photomanager.controller;
 
+import com.example.photomanager.bean.dto.UploadInfo;
 import com.example.photomanager.bean.vo.PhotoInfo;
 import com.example.photomanager.common.JsonWrapper;
 import com.example.photomanager.service.PhotoService;
@@ -7,10 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,5 +43,11 @@ public class PhotoController {
     @ApiImplicitParam(name = "message", value = "查询关键字",dataType = "String")
     public JsonWrapper<List<PhotoInfo>> fuzzyQuery(String message) {
         return new JsonWrapper<>(photoService.fuzzyQuery(message));
+    }
+
+    @ApiOperation("上传图片")
+    @PostMapping("/uploadPhoto")
+    public JsonWrapper<Boolean> uploadPhoto(UploadInfo uploadInfo) {
+        return new JsonWrapper<>(photoService.uploadPhoto(uploadInfo));
     }
 }

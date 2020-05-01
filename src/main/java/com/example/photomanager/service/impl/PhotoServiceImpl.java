@@ -1,12 +1,19 @@
 package com.example.photomanager.service.impl;
 
+import com.example.photomanager.bean.dto.UploadInfo;
 import com.example.photomanager.bean.entity.Photo;
 import com.example.photomanager.bean.vo.PhotoInfo;
 import com.example.photomanager.mapper.PhotoMapper;
 import com.example.photomanager.service.PhotoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.photomanager.util.QiniuUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -15,6 +22,9 @@ import java.util.List;
  */
 @Service
 public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements PhotoService {
+
+    @Autowired
+    PhotoMapper photoMapper;
 
     /**
      * 模糊查询
@@ -38,5 +48,24 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     @Override
     public Boolean modifyPhoto(PhotoInfo photoInfo) {
         return null;
+    }
+
+
+    /**
+     * 上传图片,待完善:检验图片格式,断电上传,多线程上传
+     * @return true代表上传成功,false代表上传失败
+     */
+    @Override
+    public Boolean uploadPhoto(UploadInfo uploadInfo) {
+        String url = QiniuUtils.uploadPhoto(uploadInfo.getFile(),uploadInfo.getName());
+        Photo photo = new Photo();
+        BeanUtils.copyProperties(uploadInfo,photo);
+        photo.setUrl(url);
+        photo.setCreateTime(LocalDateTime.now());
+        photo.setUpdateTime(LocalDateTime.now());
+        if (photoMapper.insert(photo) > 0){
+            return true;
+        }
+        return false;
     }
 }
