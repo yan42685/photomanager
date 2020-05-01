@@ -36,7 +36,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public UserInfo register(RegistryInfo info) {
         // 进行Sha256加密,并转为16进制
-        Sha256Hash sha256Hash = new Sha256Hash(info.getPassword());
+        Sha256Hash sha256Hash = new Sha256Hash(info.getPassword(),info.getUsername(),1024);
         info.setPassword(sha256Hash.toHex());
         User user = new User();
         BeanUtils.copyProperties(info,user);
