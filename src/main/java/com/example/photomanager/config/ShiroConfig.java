@@ -28,12 +28,12 @@ public class ShiroConfig {
         // 设置SecurityManager
         factoryBean.setSecurityManager(getDefaultWebSecurityManager());
         // 设置过滤的路径 anon：不进行拦截，user：记住密码或者已经登录过
-        Map<String,String> map = new LinkedHashMap<>();
-        map.put("/login.html","anon");
-        map.put("/register.html","anon");
-        map.put("/**","user");
+//        Map<String,String> map = new LinkedHashMap<>();
+//        map.put("/login.html","anon");
+//        map.put("/register.html","anon");
+//        map.put("/**","user");
 
-        factoryBean.setFilterChainDefinitionMap(map);
+//        factoryBean.setFilterChainDefinitionMap(map);
         factoryBean.setLoginUrl("/login.html");
         return factoryBean;
     }
