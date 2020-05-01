@@ -1,5 +1,6 @@
 package com.example.photomanager.service.impl;
 
+import com.example.photomanager.bean.dto.RegistryInfo;
 import com.example.photomanager.bean.entity.User;
 import com.example.photomanager.service.UserService;
 import org.junit.jupiter.api.Assertions;
@@ -32,6 +33,16 @@ class UserServiceImplTest {
 
         User findUser = userService.getById(id);
         Assertions.assertEquals(findUser.getNickname(), nickName);
+    }
+
+    @Test
+    void register() {
+        RegistryInfo registryInfo = new RegistryInfo();
+        registryInfo.setUsername("test");
+        registryInfo.setNickname("test");
+        registryInfo.setPassword("123456");
+        registryInfo.setEmail("2410252220@qq.com");
+        userService.register(registryInfo);
     }
 }
     
