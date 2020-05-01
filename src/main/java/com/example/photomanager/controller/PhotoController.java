@@ -26,7 +26,7 @@ public class PhotoController {
 
     @ApiOperation("查询当前相册下的所有照片")
     @GetMapping("/")
-    @ApiImplicitParam(name = "albumId", value = "相册Id",dataType = "Long")
+    @ApiImplicitParam(name = "albumId", value = "相册Id", dataType = "Long")
     public JsonWrapper<List<PhotoInfo>> query(Long albumId) {
         return new JsonWrapper<>(photoService.query(albumId));
     }
@@ -40,7 +40,7 @@ public class PhotoController {
 
     @ApiOperation("模糊查询")
     @GetMapping("/fuzzyquery")
-    @ApiImplicitParam(name = "message", value = "查询关键字",dataType = "String")
+    @ApiImplicitParam(name = "message", value = "查询关键字", dataType = "String")
     public JsonWrapper<List<PhotoInfo>> fuzzyQuery(String message) {
         return new JsonWrapper<>(photoService.fuzzyQuery(message));
     }
@@ -50,4 +50,12 @@ public class PhotoController {
     public JsonWrapper<Boolean> uploadPhoto(UploadInfo uploadInfo) {
         return new JsonWrapper<>(photoService.uploadPhoto(uploadInfo));
     }
+
+    @ApiOperation("下载图片")
+    @GetMapping("/downloadPhoto/{id}")
+    @ApiImplicitParam(name="id", value = "图片的id", dataType = "Long")
+    public JsonWrapper<Boolean> downloadPhoto(@PathVariable("id") Long id) {
+        return new JsonWrapper<>(photoService.downloadPhoto(id));
+    }
 }
+

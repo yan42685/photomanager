@@ -57,7 +57,7 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
      */
     @Override
     public Boolean uploadPhoto(UploadInfo uploadInfo) {
-        String url = QiniuUtils.uploadPhoto(uploadInfo.getFile(),uploadInfo.getName());
+        String url = QiniuUtils.uploadPhoto(uploadInfo.getFile());
         Photo photo = new Photo();
         BeanUtils.copyProperties(uploadInfo,photo);
         photo.setUrl(url);
@@ -67,5 +67,16 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
             return true;
         }
         return false;
+    }
+
+    /**
+     * 下载图片
+     * @param id 图片id
+     */
+    @Override
+    public Boolean downloadPhoto(Long id) {
+        String url = photoMapper.selectById(id).getUrl();
+        QiniuUtils.downloadPhoto(url);
+        return true;
     }
 }

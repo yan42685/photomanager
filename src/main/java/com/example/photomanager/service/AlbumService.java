@@ -3,7 +3,6 @@ package com.example.photomanager.service;
 import com.example.photomanager.bean.entity.Album;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.photomanager.bean.vo.AlbumInfo;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.List;
 

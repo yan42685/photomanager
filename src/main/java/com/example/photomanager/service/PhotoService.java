@@ -16,4 +16,6 @@ public interface PhotoService extends IService<Photo> {
     Boolean modifyPhoto(PhotoInfo photoInfo);
 
     Boolean uploadPhoto(UploadInfo photoInfo);
+
+    Boolean downloadPhoto(Long id);
 }
