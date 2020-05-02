@@ -44,6 +44,4 @@ public class User implements Serializable {
 
     @ApiModelProperty(value = "昵称")
     private String nickname;
-
-
 }

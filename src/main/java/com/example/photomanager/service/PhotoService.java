@@ -18,4 +18,16 @@ public interface PhotoService extends IService<Photo> {
     Boolean uploadPhoto(UploadInfo photoInfo);
 
     Boolean downloadPhoto(Long id);
+
+    Boolean deletePhoto(Long id);
+
+    Boolean deletePhotos(List<Long> ids);
+
+    Boolean deletePhotoFromRecycleBin(Long id);
+
+    Boolean deletePhotosFromRecycleBin(List<Long> ids);
+
+    Boolean restorePhoto(Long id);
+
+    Boolean restorePhotos(List<Long> ids);
 }

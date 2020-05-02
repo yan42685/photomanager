@@ -2,4 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.photomanager.mapper.PhotoMapper">
 
+    <select id="getImageKeysByIds" resultType="String">
+        select image_key from photo where id in
+        <foreach collection="list" item="id" separator="," open="("
+        close=")">
+            #{id}
+        </foreach>
+    </select>
+
 </mapper>

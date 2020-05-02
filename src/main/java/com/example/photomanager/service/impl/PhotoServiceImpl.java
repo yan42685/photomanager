@@ -9,6 +9,7 @@ import com.example.photomanager.mapper.PhotoMapper;
 import com.example.photomanager.service.PhotoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.photomanager.util.FileUtils;
+import com.example.photomanager.util.QZ_IdUtils;
 import com.example.photomanager.util.QiniuUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,15 +61,18 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
      */
     @Override
     public Boolean uploadPhoto(UploadInfo uploadInfo) {
-        if (!FileUtils.checkPictureFormat(uploadInfo.getFile().getName())){
+        String fileName = uploadInfo.getFile().getName();
+        if (!FileUtils.checkPictureFormat(fileName)){
             throw new KnownException(ExceptionEnum.IMAGE_UPLOAD_FAIL);
         }
         String url = QiniuUtils.uploadPhoto(uploadInfo.getFile());
         Photo photo = new Photo();
         BeanUtils.copyProperties(uploadInfo,photo);
         photo.setUrl(url);
+        photo.setUserId(QZ_IdUtils.getUserId());
         photo.setCreateTime(LocalDateTime.now());
         photo.setUpdateTime(LocalDateTime.now());
+        photo.setImageKey(fileName);
         if (photoMapper.insert(photo) > 0){
             return true;
         }
@@ -83,6 +87,79 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     public Boolean downloadPhoto(Long id) {
         String url = photoMapper.selectById(id).getUrl();
         QiniuUtils.downloadPhoto(url);
+        return true;
+    }
+
+    /**
+     *  删除图片到回收站
+     */
+    @Override
+    public Boolean deletePhoto(Long id) {
+        Photo photo = photoMapper.selectById(id);
+        photo.setIsRecycle(true);
+        photoMapper.updateById(photo);
+        return true;
+    }
+
+    /**
+     *  删除多张图片到回收站
+     */
+    @Override
+    public Boolean deletePhotos(List<Long> ids) {
+        List<Photo> photos = photoMapper.selectBatchIds(ids);
+        for (Photo photo:photos){
+            photo.setIsRecycle(true);
+            photoMapper.updateById(photo);
+        }
+        return true;
+    }
+
+    /**
+     * @return 从回收站中删除一张图片
+     */
+    @Override
+    public Boolean deletePhotoFromRecycleBin(Long id) {
+        QiniuUtils.deletePhoto(photoMapper.selectById(id).getImageKey());
+        if (photoMapper.deleteById(id)>0){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @return 从回收站删除多张照片
+     */
+    @Override
+    public Boolean deletePhotosFromRecycleBin(List<Long> ids) {
+        List<String> imageKeys = photoMapper.getImageKeysByIds(ids);
+        QiniuUtils.deletePhotos((imageKeys.toArray(new String[0])));
+        if (photoMapper.deleteBatchIds(ids)>0){
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     *  还原一张图片
+     */
+    @Override
+    public Boolean restorePhoto(Long id) {
+        Photo photo = photoMapper.selectById(id);
+        photo.setIsRecycle(false);
+        photoMapper.updateById(photo);
+        return true;
+    }
+
+    /**
+     *  还原多张图片
+     */
+    @Override
+    public Boolean restorePhotos(List<Long> ids) {
+        List<Photo> photos = photoMapper.selectBatchIds(ids);
+        for (Photo photo:photos){
+            photo.setIsRecycle(false);
+            photoMapper.updateById(photo);
+        }
         return true;
     }
 }
