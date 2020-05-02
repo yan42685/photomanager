@@ -7,7 +7,6 @@ import com.example.photomanager.enums.ExceptionEnum;
 import com.example.photomanager.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 获取当前登录用户的id
