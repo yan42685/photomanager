@@ -3,9 +3,12 @@ package com.example.photomanager.service.impl;
 import com.example.photomanager.bean.dto.UploadInfo;
 import com.example.photomanager.bean.entity.Photo;
 import com.example.photomanager.bean.vo.PhotoInfo;
+import com.example.photomanager.common.KnownException;
+import com.example.photomanager.enums.ExceptionEnum;
 import com.example.photomanager.mapper.PhotoMapper;
 import com.example.photomanager.service.PhotoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.photomanager.util.FileUtils;
 import com.example.photomanager.util.QiniuUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,11 +55,14 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
 
 
     /**
-     * 上传图片,待完善:检验图片格式,断电上传,多线程上传
+     * 上传图片,待完善:断电上传,多线程上传
      * @return true代表上传成功,false代表上传失败
      */
     @Override
     public Boolean uploadPhoto(UploadInfo uploadInfo) {
+        if (!FileUtils.checkPictureFormat(uploadInfo.getFile().getName())){
+            throw new KnownException(ExceptionEnum.IMAGE_UPLOAD_FAIL);
+        }
         String url = QiniuUtils.uploadPhoto(uploadInfo.getFile());
         Photo photo = new Photo();
         BeanUtils.copyProperties(uploadInfo,photo);
