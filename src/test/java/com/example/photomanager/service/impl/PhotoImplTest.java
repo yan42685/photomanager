@@ -26,7 +26,7 @@ public class PhotoImplTest {
         info.setAlbumId(12L);
         info.setName("邱朝敲代码");
         info.setUserId(1L);
-        info.setFile(new File("D:/imgs/i1.png"));
+        info.setFile(new File("D:/server/jetbrains-agent.jar"));
         photoService.uploadPhoto(info);
     }
 

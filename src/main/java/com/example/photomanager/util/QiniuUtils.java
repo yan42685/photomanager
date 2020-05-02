@@ -70,41 +70,21 @@ public class QiniuUtils {
     /**
      * @param url : 图片链接
      * 默认下载路径 : d:/photos/
-     * 文件的下载,待实现:多线程下载 , 代码待优化
+     * 文件的下载,待实现:多线程下载
      */
     public static void downloadPhoto(String url){
-        String[] strs = url.split("/");
         // 得到文件名
-        String name = strs[strs.length-1];
-        InputStream in = null;
-        OutputStream out = null;
-        try{
+        String name = FileUtils.getFileNameFromUrl(url);
+        try {
             URL u = new URL(url);
             HttpURLConnection connection = (HttpURLConnection) u.openConnection();
-            in = connection.getInputStream();
-
-            File dir = new File(downloadDir);
-            if (!dir.exists()){
-                dir.mkdirs();
-            }
+            InputStream in = connection.getInputStream();
+            FileUtils.createDir(downloadDir);
             File file = new File(downloadDir + name);
-            out = new FileOutputStream(file);
-
-            byte[] b = new byte[1024];
-            int len = -1;
-            while ((len=in.read(b))!=-1){
-                out.write(b,0,len);
-            }
-            out.flush();
+            OutputStream out = new FileOutputStream(file);
+            FileUtils.fileInput(in,out);
         }catch (IOException e){
             throw new KnownException(ExceptionEnum.FILE_IO_EXCEPTION);
-        }finally {
-            try {
-                in.close();
-                out.close();
-            } catch (IOException e) {
-                throw new KnownException(ExceptionEnum.FILE_IO_EXCEPTION);
-            }
         }
         System.out.println("下载成功");
     }

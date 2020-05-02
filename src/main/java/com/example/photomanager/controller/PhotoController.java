@@ -45,13 +45,13 @@ public class PhotoController {
         return new JsonWrapper<>(photoService.fuzzyQuery(message));
     }
 
-    @ApiOperation("上传图片")
+    @ApiOperation("上传图片,图片格式仅支持:png,jpg,gif")
     @PostMapping("/uploadPhoto")
     public JsonWrapper<Boolean> uploadPhoto(UploadInfo uploadInfo) {
         return new JsonWrapper<>(photoService.uploadPhoto(uploadInfo));
     }
 
-    @ApiOperation("下载图片")
+    @ApiOperation("下载图片,默认下载路径:D:/photos/")
     @GetMapping("/downloadPhoto/{id}")
     @ApiImplicitParam(name="id", value = "图片的id", dataType = "Long")
     public JsonWrapper<Boolean> downloadPhoto(@PathVariable("id") Long id) {

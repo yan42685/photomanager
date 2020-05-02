@@ -35,12 +35,7 @@ class UserServiceImplTest {
 
     @Test
     void register() {
-        RegistryInfo registryInfo = new RegistryInfo();
-        registryInfo.setUsername("test");
-        registryInfo.setNickname("test");
-        registryInfo.setPassword("123456");
-        registryInfo.setEmail("2410252220@qq.com");
-        userService.register(registryInfo);
+
     }
 }
     
