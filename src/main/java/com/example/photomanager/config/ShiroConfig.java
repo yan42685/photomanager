@@ -1,15 +1,12 @@
 package com.example.photomanager.config;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
-import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 /**
  * @author 小朝
@@ -17,27 +14,6 @@ import java.util.Map;
  **/
 @Configuration
 public class ShiroConfig {
-
-    /**
-     * 创建ShiroFilterFactoryBean
-     * @return 返回ShiroFilterFactoryBean
-     */
-    @Bean
-    public ShiroFilterFactoryBean getShiroFilterFactoryBean(){
-        ShiroFilterFactoryBean factoryBean = new ShiroFilterFactoryBean();
-        // 设置SecurityManager
-        factoryBean.setSecurityManager(getDefaultWebSecurityManager());
-        // 设置过滤的路径 anon：不进行拦截，user：记住密码或者已经登录过
-//        Map<String,String> map = new LinkedHashMap<>();
-//        map.put("/login.html","anon");
-//        map.put("/register.html","anon");
-//        map.put("/**","user");
-
-//        factoryBean.setFilterChainDefinitionMap(map);
-        factoryBean.setLoginUrl("/login.html");
-        return factoryBean;
-    }
-
     /**
      * 创建DefaultWebSecurityManager
      * @return 返回DefaultWebSecurityManager
