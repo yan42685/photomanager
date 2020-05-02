@@ -43,5 +43,6 @@ public class Photo implements Serializable {
     @ApiModelProperty(value = "上传图片的用户")
     private Long userId;
 
-
+    @ApiModelProperty(value = "图片在七牛云中的key(查找时用到)")
+    private String imageKey;
 }
