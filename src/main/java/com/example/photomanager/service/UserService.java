@@ -8,6 +8,7 @@ import com.example.photomanager.enums.UserInfoEnum;
 
 import javax.servlet.http.HttpSession;
 
+
 public interface UserService extends IService<User> {
     /**
      * 修改用户信息
