@@ -2,17 +2,16 @@ package com.example.photomanager.service.impl;
 
 
 import com.example.photomanager.bean.dto.UploadInfo;
+import com.example.photomanager.bean.dto.PhotoESInfo;
+import com.example.photomanager.bean.vo.PhotoInfo;
 import com.example.photomanager.mapper.PhotoMapper;
 import com.example.photomanager.service.PhotoService;
-import com.example.photomanager.service.UserService;
-import com.example.photomanager.util.QiniuUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -66,6 +65,35 @@ public class PhotoImplTest {
         longList.add(1256460847895601153L);
         longList.add(1256461168675938306L);
         photoService.deletePhotos(longList);
+    }
+
+    /**
+     * ES测试，上传更新信息
+     */
+    @Test
+    public void addOrUpdatePhotoToES() {
+        PhotoESInfo info = PhotoESInfo.builder().photoId(1L).userId(1L).desc("第二张图片").build();
+        photoService.addOrUpdatePhotoToES(info);
+    }
+
+    /**
+     * 模糊查询
+     */
+    @Test
+    public void fuzzyQuery() {
+        List<PhotoInfo> list = photoService.fuzzyQuery("二");
+        for (PhotoInfo photoInfo : list) {
+            System.out.println(photoInfo);
+        }
+    }
+
+    /**
+     * 删除ES数据
+     */
+    @Test
+    public void deletePhotoToES() {
+        Boolean photo = photoService.deletePhotoToES(1L);
+        System.out.println(photo);
     }
 
 
