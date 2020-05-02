@@ -16,8 +16,8 @@ public class KnownException extends RuntimeException {
      */
     private Integer errorCode;
 
-    public KnownException(ExceptionEnum exception) {
-        super(exception.getErrorMsg());
-        this.errorCode = exception.getErrorCode();
+    public KnownException(ExceptionEnum e) {
+        super(e.getErrorMsg());
+        this.errorCode = e.getErrorCode();
     }
 }
