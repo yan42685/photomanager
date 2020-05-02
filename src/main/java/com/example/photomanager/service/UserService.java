@@ -15,6 +15,9 @@ public interface UserService extends IService<User> {
      */
     boolean modifyInfo(UserInfoEnum field, String data);
 
+    /**
+     * 注册 返回的头像是预设的
+     */
     UserInfo register(RegistryInfo info);
 
     boolean checkUsername(String username);
