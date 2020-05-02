@@ -56,7 +56,7 @@ public class UserController {
      * @param email email
      * @return 返回true或false
      */
-    @ApiOperation("检查邮箱是否已经存在，存在返回true，不存在返回false，注册和找回密码时都需要检查")
+    @ApiOperation("检查邮箱是否已经存在，存在返回true，不存在返回false，找回密码时需要检查")
     @GetMapping("check-email")
     public JsonWrapper<Boolean> checkEmail(String email) {
         return new JsonWrapper<>(userService.checkEmail(email));
