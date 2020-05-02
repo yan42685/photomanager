@@ -65,7 +65,7 @@ public class PhotoImplTest {
         longList.add(1256460787665399809L);
         longList.add(1256460847895601153L);
         longList.add(1256461168675938306L);
-        photoService.restorePhotos(longList);
+        photoService.deletePhotos(longList);
     }
 
 

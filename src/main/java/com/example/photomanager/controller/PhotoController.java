@@ -58,15 +58,29 @@ public class PhotoController {
         return new JsonWrapper<>(photoService.downloadPhoto(id));
     }
 
-    @ApiOperation("从回收站中删除一张图片")
+    @ApiOperation("删除图片到回收站")
     @DeleteMapping("/deletePhoto/{id}")
+    @ApiImplicitParam(name="id", value = "图片的id", dataType = "Long")
+    public JsonWrapper<Boolean> deletePhoto(@PathVariable("id") Long id) {
+        return new JsonWrapper<>(photoService.deletePhoto(id));
+    }
+
+    @ApiOperation("删除多张图片到回收站")
+    @DeleteMapping("/deletePhotos")
+    @ApiImplicitParam(name="ids", value = "要删除的图片的id组成的list,eg:1,2,3,8")
+    public JsonWrapper<Boolean> deletePhotos(@RequestParam("ids")List<Long> ids) {
+        return new JsonWrapper<>(photoService.deletePhotos(ids));
+    }
+
+    @ApiOperation("从回收站中删除一张图片")
+    @DeleteMapping("/deletePhotoFromRecycleBin/{id}")
     @ApiImplicitParam(name="id", value = "图片的id", dataType = "Long")
     public JsonWrapper<Boolean> deletePhotoFromRecycleBin(@PathVariable("id") Long id) {
         return new JsonWrapper<>(photoService.deletePhotoFromRecycleBin(id));
     }
 
     @ApiOperation("从回收站删除多张照片")
-    @DeleteMapping("/deletePhotos")
+    @DeleteMapping("/deletePhotosFromRecycleBin")
     @ApiImplicitParam(name="ids", value = "要删除的图片的id组成的list,eg:1,2,3,8")
     public JsonWrapper<Boolean> deletePhotosFromRecycleBin(@RequestParam("ids") List<Long> ids) {
         return new JsonWrapper<>(photoService.deletePhotosFromRecycleBin(ids));

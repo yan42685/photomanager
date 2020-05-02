@@ -9,6 +9,7 @@ import com.example.photomanager.mapper.PhotoMapper;
 import com.example.photomanager.service.PhotoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.photomanager.util.FileUtils;
+import com.example.photomanager.util.QZ_IdUtils;
 import com.example.photomanager.util.QiniuUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,7 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
         Photo photo = new Photo();
         BeanUtils.copyProperties(uploadInfo,photo);
         photo.setUrl(url);
+        photo.setUserId(QZ_IdUtils.getUserId());
         photo.setCreateTime(LocalDateTime.now());
         photo.setUpdateTime(LocalDateTime.now());
         photo.setImageKey(fileName);
@@ -85,6 +87,30 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     public Boolean downloadPhoto(Long id) {
         String url = photoMapper.selectById(id).getUrl();
         QiniuUtils.downloadPhoto(url);
+        return true;
+    }
+
+    /**
+     *  删除图片到回收站
+     */
+    @Override
+    public Boolean deletePhoto(Long id) {
+        Photo photo = photoMapper.selectById(id);
+        photo.setIsRecycle(true);
+        photoMapper.updateById(photo);
+        return true;
+    }
+
+    /**
+     *  删除多张图片到回收站
+     */
+    @Override
+    public Boolean deletePhotos(List<Long> ids) {
+        List<Photo> photos = photoMapper.selectBatchIds(ids);
+        for (Photo photo:photos){
+            photo.setIsRecycle(true);
+            photoMapper.updateById(photo);
+        }
         return true;
     }
 
