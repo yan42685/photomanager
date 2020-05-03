@@ -1,5 +1,6 @@
 package com.example.photomanager.bean.vo;
 
+import com.example.photomanager.bean.entity.Photo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -32,4 +33,11 @@ public class PhotoInfo implements Serializable {
 
     @ApiModelProperty(value = "从属相册")
     private Long albumId;
+
+    public static PhotoInfo parsePhoto(Photo photo) {
+        return PhotoInfo.builder().id(photo.getId())
+                .name(photo.getName())
+                .url(photo.getUrl())
+                .albumId(photo.getAlbumId()).build();
+    }
 }

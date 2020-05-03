@@ -1,5 +1,6 @@
 package com.example.photomanager.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.photomanager.bean.dto.UploadInfo;
 import com.example.photomanager.bean.entity.Photo;
 import com.example.photomanager.bean.dto.PhotoESInfo;
@@ -68,19 +69,36 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
 
     @Override
     public List<PhotoInfo> query(Long albumId) {
-        return null;
+        QueryWrapper<Photo> wrapper = new QueryWrapper<>();
+        wrapper.eq("album_id", albumId);
+        List<Photo> list = list(wrapper);
+        LinkedList<PhotoInfo> infoLinkedList = new LinkedList<>();
+        for (Photo i : list) {
+            infoLinkedList.add(PhotoInfo.parsePhoto(i));
+        }
+        return infoLinkedList;
     }
 
 
     @Override
     public PhotoInfo queryById(Long id) {
-        return null;
+        Photo photo = getById(id);
+        return PhotoInfo.parsePhoto(photo);
     }
 
 
     @Override
     public Boolean modifyPhoto(PhotoInfo photoInfo) {
-        return null;
+        //更新数据库
+        Photo photo = getById(photoInfo.getId());
+        photo.setName(photoInfo.getName()).setUpdateTime(LocalDateTime.now());
+        boolean b = updateById(photo);
+        //更新ES
+        PhotoESInfo esInfo = PhotoESInfo.builder().photoId(photo.getId())
+                .userId(photo.getUserId())
+                .desc(photo.getName()).build();
+        Boolean photoToES = addOrUpdatePhotoToES(esInfo);
+        return b && photoToES;
     }
 
 

@@ -84,4 +84,19 @@ public class PhotoImplTest {
         Assertions.assertTrue(photoService.deletePhotoToES(1L));
     }
 
+    /**
+     * 对图片的修改，查询操作测试
+     */
+    @Test
+    public void test5() {
+        //查询album为12的所有图片
+        List<PhotoInfo> list = photoService.query(12L);
+        Assertions.assertEquals(list.size(),2);
+
+        //修改图片id为1256594971134320641的name
+        //PhotoInfo info = PhotoInfo.builder().id(1256594971134320641L).name("夏末秋凉").build();
+        //photoService.modifyPhoto(info);
+
+    }
+
 }
