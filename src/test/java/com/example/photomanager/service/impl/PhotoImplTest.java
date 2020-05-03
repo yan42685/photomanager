@@ -84,5 +84,4 @@ public class PhotoImplTest {
         Assertions.assertTrue(photoService.deletePhotoToES(1L));
     }
 
-
 }
