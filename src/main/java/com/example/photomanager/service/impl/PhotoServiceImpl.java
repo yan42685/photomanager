@@ -70,7 +70,7 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     @Override
     public List<PhotoInfo> query(Long albumId) {
         QueryWrapper<Photo> wrapper = new QueryWrapper<>();
-        wrapper.eq("album_id", albumId);
+        wrapper.eq("album_id", albumId).eq("is_recycle", false);
         List<Photo> list = list(wrapper);
         LinkedList<PhotoInfo> infoLinkedList = new LinkedList<>();
         for (Photo i : list) {
@@ -100,7 +100,6 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
         Boolean photoToES = addOrUpdatePhotoToES(esInfo);
         return b && photoToES;
     }
-
 
 
     /**
@@ -189,7 +188,7 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     public Boolean deletePhotosFromRecycleBin(List<Long> ids) {
         List<String> imageKeys = photoMapper.getImageKeysByIds(ids);
         QiniuUtils.deletePhotos((imageKeys.toArray(new String[0])));
-        for (int i=0;i<ids.size();i++){
+        for (int i = 0; i < ids.size(); i++) {
             Long id = ids.get(i);
             photoMapper.deleteById(id);
             deletePhotoToES(id);
