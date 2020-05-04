@@ -92,6 +92,7 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     }
 
 
+
     /**
      * 上传图片,待完善:断电上传,多线程上传
      *
@@ -112,6 +113,12 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
         photo.setUpdateTime(LocalDateTime.now());
         photo.setImageKey(fileName);
         if (photoMapper.insert(photo) > 0) {
+            // 同步es
+            PhotoESInfo esInfo = new PhotoESInfo();
+            esInfo.setDesc(photo.getName());
+            esInfo.setPhotoId(photo.getId());
+            esInfo.setUserId(photo.getUserId());
+            addOrUpdatePhotoToES(esInfo);
             return true;
         }
         return false;
@@ -159,7 +166,7 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     @Override
     public Boolean deletePhotoFromRecycleBin(Long id) {
         QiniuUtils.deletePhoto(photoMapper.selectById(id).getImageKey());
-        if (photoMapper.deleteById(id) > 0) {
+        if (photoMapper.deleteById(id) > 0 && deletePhotoToES(id)) {
             return true;
         }
         return false;
@@ -172,8 +179,10 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     public Boolean deletePhotosFromRecycleBin(List<Long> ids) {
         List<String> imageKeys = photoMapper.getImageKeysByIds(ids);
         QiniuUtils.deletePhotos((imageKeys.toArray(new String[0])));
-        if (photoMapper.deleteBatchIds(ids) > 0) {
-            return true;
+        for (int i=0;i<ids.size();i++){
+            Long id = ids.get(i);
+            photoMapper.deleteById(id);
+            deletePhotoToES(id);
         }
         return false;
     }
