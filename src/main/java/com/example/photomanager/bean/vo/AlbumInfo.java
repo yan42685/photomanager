@@ -1,5 +1,6 @@
 package com.example.photomanager.bean.vo;
 
+import com.example.photomanager.bean.entity.Album;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -29,4 +30,12 @@ public class AlbumInfo implements Serializable {
 
     @ApiModelProperty("相册封面URL，可以为null")
     private String cover;
+
+    public static AlbumInfo parseAlbum(Album album) {
+        return AlbumInfo.builder()
+                .id(album.getId())
+                .name(album.getName())
+                .desc(album.getDescription())
+                .cover(album.getCover()).build();
+    }
 }

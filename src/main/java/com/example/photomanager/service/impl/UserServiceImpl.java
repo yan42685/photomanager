@@ -10,6 +10,7 @@ import com.example.photomanager.mapper.UserMapper;
 import com.example.photomanager.service.QZ_MailService;
 import com.example.photomanager.service.UserService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.photomanager.util.ServletUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Sha256Hash;
@@ -39,13 +40,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return true;
     }
 
-    /**
-     * 邱朝
-     * 如果插入不成功，返回空的UserInfo
-     * 插入成功，返回实际UserInfo
-     * @param info 传入的info
-     * @return 返回UserInfo
-     */
     @Override
     public UserInfo register(RegistryInfo info) {
         // 进行Sha256加密,用户名作为盐，并转为16进制
@@ -65,10 +59,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return userInfo;
     }
 
-    /**
-     * @param username 传入的username
-     * @return 返回username是否已经存在
-     */
     @Override
     public boolean checkUsername(String username) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
@@ -77,11 +67,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return user!=null;
     }
 
-    /**
-     *
-     * @param email 传入的email
-     * @return 返回email是否已经存在
-     */
     @Override
     public boolean checkEmail(String email) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
@@ -90,12 +75,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return user!=null;
     }
 
-    /**
-     * @param username 传入的用户名
-     * @param password 传入的密码
-     * @param rememberMe 是否勾选记住密码十天
-     * @return 不抛异常，证明登录成功，直接返回true
-     */
     @Override
     public boolean login(String username, String password, Boolean rememberMe) {
         Subject subject = SecurityUtils.getSubject();
@@ -111,21 +90,22 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public boolean getActiveCode(String email, HttpSession session) {
+    public boolean getActiveCode(String email) {
         Random random = new Random();
         StringBuffer result= new StringBuffer();
         for (int i=0;i<CODE_COUNT;i++){
             result.append(random.nextInt(10));
         }
         // session存入验证码，以email作为name，验证码作为value
-        session.setAttribute(email,result.toString());
+        ServletUtils.getRequest().getSession().setAttribute(email,result.toString());
         mailService.sendSimpleMail(email,result.toString());
         return true;
     }
 
     @Override
-    public boolean checkActiveCode(String email, String activeCode, HttpSession session) {
+    public boolean checkActiveCode(String email, String activeCode) {
         // 通过email来从session中获取验证码，再和用户输入的验证码进行比对
+        HttpSession session = ServletUtils.getRequest().getSession();
         String active = (String) session.getAttribute(email);
         return active.equals(activeCode);
     }

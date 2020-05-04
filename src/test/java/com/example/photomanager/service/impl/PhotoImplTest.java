@@ -6,6 +6,7 @@ import com.example.photomanager.bean.dto.PhotoESInfo;
 import com.example.photomanager.bean.vo.PhotoInfo;
 import com.example.photomanager.mapper.PhotoMapper;
 import com.example.photomanager.service.PhotoService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -22,8 +23,9 @@ public class PhotoImplTest {
 
     @Autowired
     PhotoMapper mapper;
+
     /**
-     *  上传测试
+     * 上传测试
      */
     @Test
     public void test1() {
@@ -36,7 +38,7 @@ public class PhotoImplTest {
     }
 
     /**
-     *  下载测试
+     * 下载测试
      */
     @Test
     public void test2() {
@@ -45,10 +47,10 @@ public class PhotoImplTest {
 
 
     /**
-     *  删除测试
+     * 删除测试
      */
     @Test
-    public void test3(){
+    public void test3() {
         List<Long> longList = new ArrayList<>();
         longList.add(1256454204629803009L);
         longList.add(1256454842503774209L);
@@ -56,10 +58,10 @@ public class PhotoImplTest {
     }
 
     /**
-     *  批量还原
+     * 批量还原
      */
     @Test
-    public void test4(){
+    public void test4() {
         List<Long> longList = new ArrayList<>();
         longList.add(1256460787665399809L);
         longList.add(1256460847895601153L);
@@ -68,33 +70,33 @@ public class PhotoImplTest {
     }
 
     /**
-     * ES测试，上传更新信息
+     * ES的增删改查
      */
     @Test
-    public void addOrUpdatePhotoToES() {
+    public void ESTest() {
+        //增加修改
         PhotoESInfo info = PhotoESInfo.builder().photoId(1L).userId(1L).desc("第二张图片").build();
         photoService.addOrUpdatePhotoToES(info);
+        //模糊查询
+        List<PhotoESInfo> list = photoService.fuzzyQueryES("二");
+        Assertions.assertNotNull(list);
+        //删除刚创建的数据，防止数据污染
+        Assertions.assertTrue(photoService.deletePhotoToES(1L));
     }
 
     /**
-     * 模糊查询
+     * 对图片的修改，查询操作测试
      */
     @Test
-    public void fuzzyQuery() {
-        List<PhotoInfo> list = photoService.fuzzyQuery("二");
-        for (PhotoInfo photoInfo : list) {
-            System.out.println(photoInfo);
-        }
-    }
+    public void test5() {
+        //查询album为12的所有图片
+        List<PhotoInfo> list = photoService.query(12L);
+        Assertions.assertEquals(list.size(),2);
 
-    /**
-     * 删除ES数据
-     */
-    @Test
-    public void deletePhotoToES() {
-        Boolean photo = photoService.deletePhotoToES(1L);
-        System.out.println(photo);
-    }
+        //修改图片id为1256594971134320641的name
+        //PhotoInfo info = PhotoInfo.builder().id(1256594971134320641L).name("夏末秋凉").build();
+        //photoService.modifyPhoto(info);
 
+    }
 
 }

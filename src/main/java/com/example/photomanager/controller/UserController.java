@@ -56,7 +56,7 @@ public class UserController {
      * @param email email
      * @return 返回true或false
      */
-    @ApiOperation("检查邮箱是否已经存在，存在返回true，不存在返回false，注册和找回密码时都需要检查")
+    @ApiOperation("检查邮箱是否已经存在，存在返回true，不存在返回false，找回密码时需要检查")
     @GetMapping("check-email")
     public JsonWrapper<Boolean> checkEmail(String email) {
         return new JsonWrapper<>(userService.checkEmail(email));
@@ -72,13 +72,12 @@ public class UserController {
      * 发送ajax请求，发送验证码
      *
      * @param email   邮箱
-     * @param session session
      * @return 不出异常，则邮件发送成功
      */
     @ApiOperation("发送邮箱验证码")
     @GetMapping("send-email-code")
-    public JsonWrapper<Boolean> getActiveCode(String email, HttpSession session) {
-        return new JsonWrapper<>(userService.getActiveCode(email, session));
+    public JsonWrapper<Boolean> getActiveCode(String email) {
+        return new JsonWrapper<>(userService.getActiveCode(email));
     }
 
     /**
@@ -86,13 +85,12 @@ public class UserController {
      *
      * @param email      用户email
      * @param activeCode 用户输入的activeCode
-     * @param session    session
      * @return 返回是否验证成功，成功则跳转到输入新密码界面,同时将邮箱也带过去显示
      */
     @ApiOperation("核实验证码")
     @GetMapping("check-email-code")
-    public JsonWrapper<Boolean> checkActiveCode(String email, String activeCode, HttpSession session) {
-        return new JsonWrapper<>(userService.checkActiveCode(email, activeCode, session));
+    public JsonWrapper<Boolean> checkActiveCode(String email, String activeCode) {
+        return new JsonWrapper<>(userService.checkActiveCode(email, activeCode));
     }
 
     /**

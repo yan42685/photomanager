@@ -1,5 +1,6 @@
 package com.example.photomanager.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.photomanager.bean.dto.UploadInfo;
 import com.example.photomanager.bean.entity.Photo;
 import com.example.photomanager.bean.dto.PhotoESInfo;
@@ -34,14 +35,11 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     @Autowired
     PhotoESMapper photoESMapper;
 
-    /**
-     * 模糊查询，根据当前用户的图片查询
-     */
     @Override
     public List<PhotoInfo> fuzzyQuery(String message) {
-        //获取当前用户id
-        Long currentUserid = 1L;
-        List<PhotoESInfo> photoESInfos = photoESMapper.findByUserIdAndDescLike(currentUserid, message);
+
+        List<PhotoESInfo> photoESInfos = fuzzyQueryES(message);
+        //封装成VO对象
         List<PhotoInfo> photoInfos = new LinkedList<>();
         for (PhotoESInfo i : photoESInfos) {
             photoInfos.add(queryById(i.getPhotoId()));
@@ -49,46 +47,58 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
         return photoInfos;
     }
 
-    /**
-     * 添加或修改ES数据
-     */
+    @Override
+    public List<PhotoESInfo> fuzzyQueryES(String message) {
+        //获取当前用户id
+        Long currentUserid = 1L;
+        return photoESMapper.findByUserIdAndDescLike(currentUserid, message);
+    }
+
     @Override
     public Boolean addOrUpdatePhotoToES(PhotoESInfo photoESInfo) {
         photoESMapper.save(photoESInfo);
         return true;
     }
 
-    /**
-     * 删除ES图片数据
-     */
     @Override
     public Boolean deletePhotoToES(Long photoId) {
         photoESMapper.deleteById(photoId);
         return true;
     }
 
-    /**
-     * 查询相册下的图片
-     */
+
     @Override
     public List<PhotoInfo> query(Long albumId) {
-        return null;
+        QueryWrapper<Photo> wrapper = new QueryWrapper<>();
+        wrapper.eq("album_id", albumId);
+        List<Photo> list = list(wrapper);
+        LinkedList<PhotoInfo> infoLinkedList = new LinkedList<>();
+        for (Photo i : list) {
+            infoLinkedList.add(PhotoInfo.parsePhoto(i));
+        }
+        return infoLinkedList;
     }
 
-    /**
-     * 根据图片id查询图片详细信息，并封装
-     */
+
     @Override
     public PhotoInfo queryById(Long id) {
-        return null;
+        Photo photo = getById(id);
+        return PhotoInfo.parsePhoto(photo);
     }
 
-    /**
-     * 修改图片信息
-     */
+
     @Override
     public Boolean modifyPhoto(PhotoInfo photoInfo) {
-        return null;
+        //更新数据库
+        Photo photo = getById(photoInfo.getId());
+        photo.setName(photoInfo.getName()).setUpdateTime(LocalDateTime.now());
+        boolean b = updateById(photo);
+        //更新ES
+        PhotoESInfo esInfo = PhotoESInfo.builder().photoId(photo.getId())
+                .userId(photo.getUserId())
+                .desc(photo.getName()).build();
+        Boolean photoToES = addOrUpdatePhotoToES(esInfo);
+        return b && photoToES;
     }
 
 
