@@ -8,6 +8,9 @@ import com.example.photomanager.bean.vo.PhotoInfo;
 
 import java.util.List;
 
+/**
+ * @author LuckyCurve
+ */
 public interface PhotoService extends IService<Photo> {
     /**
      * 模糊查询，根据当前用户的图片查询，返回封装了的VO对象
