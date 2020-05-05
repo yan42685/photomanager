@@ -37,6 +37,7 @@ public class TestController {
     @ApiOperation(value = "加法运算", notes = "两个整数相加")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "x", value = "被加数", dataType = "int"),
+
             @ApiImplicitParam(name = "y", value = "加数", dataType = "int")
     })
     @GetMapping("add")
