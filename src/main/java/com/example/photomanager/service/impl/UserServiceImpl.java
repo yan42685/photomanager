@@ -2,10 +2,10 @@ package com.example.photomanager.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.example.photomanager.bean.dto.ModifiableUserInfo;
 import com.example.photomanager.bean.dto.RegistryInfo;
 import com.example.photomanager.bean.entity.User;
 import com.example.photomanager.bean.vo.UserInfo;
-import com.example.photomanager.enums.UserInfoEnum;
 import com.example.photomanager.mapper.UserMapper;
 import com.example.photomanager.service.QZ_MailService;
 import com.example.photomanager.service.UserService;
@@ -35,7 +35,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private final static int CODE_COUNT = 6;
 
     @Override
-    public boolean modifyInfo(UserInfoEnum field, String data) {
+    public boolean modifyInfo(ModifiableUserInfo info) {
         // TODO: 如果用户登录了 那么应该有一个util方法获取当前用户 id
         return true;
     }
@@ -43,47 +43,47 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public UserInfo register(RegistryInfo info) {
         // 进行Sha256加密,用户名作为盐，并转为16进制
-        Sha256Hash sha256Hash = new Sha256Hash(info.getPassword(),info.getUsername(),1024);
+        Sha256Hash sha256Hash = new Sha256Hash(info.getPassword(), info.getUsername(), 1024);
         info.setPassword(sha256Hash.toHex());
         User user = new User();
-        BeanUtils.copyProperties(info,user);
+        BeanUtils.copyProperties(info, user);
         user.setCreateTime(LocalDateTime.now());
         user.setUpdateTime(LocalDateTime.now());
         user.setAvatarUrl(null);
         boolean result = save(user);
-        if(!result){
+        if (!result) {
             return new UserInfo();
         }
         UserInfo userInfo = new UserInfo();
-        BeanUtils.copyProperties(user,userInfo);
+        BeanUtils.copyProperties(user, userInfo);
         return userInfo;
     }
 
     @Override
     public boolean checkUsername(String username) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.eq("username",username);
+        wrapper.eq("username", username);
         User user = getOne(wrapper);
-        return user!=null;
+        return user != null;
     }
 
     @Override
     public boolean checkEmail(String email) {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.eq("email",email);
+        wrapper.eq("email", email);
         User user = getOne(wrapper);
-        return user!=null;
+        return user != null;
     }
 
     @Override
     public boolean login(String username, String password, Boolean rememberMe) {
         Subject subject = SecurityUtils.getSubject();
-        UsernamePasswordToken token = new UsernamePasswordToken(username,password);
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         subject.login(token);
-        if(rememberMe){
+        if (rememberMe) {
             // 勾选了记住密码，则记住密码10天
             token.setRememberMe(true);
-        }else {
+        } else {
             token.setRememberMe(false);
         }
         return true;
@@ -92,13 +92,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public boolean getActiveCode(String email) {
         Random random = new Random();
-        StringBuffer result= new StringBuffer();
-        for (int i=0;i<CODE_COUNT;i++){
+        StringBuffer result = new StringBuffer();
+        for (int i = 0; i < CODE_COUNT; i++) {
             result.append(random.nextInt(10));
         }
         // session存入验证码，以email作为name，验证码作为value
-        ServletUtils.getRequest().getSession().setAttribute(email,result.toString());
-        mailService.sendSimpleMail(email,result.toString());
+        ServletUtils.getRequest().getSession().setAttribute(email, result.toString());
+        mailService.sendSimpleMail(email, result.toString());
         return true;
     }
 
@@ -113,7 +113,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public boolean modifyPassword(String email, String password) {
         UpdateWrapper<User> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.set("password",password).eq("email",email);
+        updateWrapper.set("password", password).eq("email", email);
         return this.update(updateWrapper);
     }
 }
