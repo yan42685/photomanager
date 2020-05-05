@@ -3,7 +3,10 @@ package com.example.photomanager.controller;
 import com.example.photomanager.common.JsonWrapper;
 import com.example.photomanager.common.KnownException;
 import com.example.photomanager.enums.ExceptionEnum;
+import com.qiniu.util.Json;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindException;
@@ -80,5 +83,26 @@ public class GlobalExceptionHandler {
         int errorCode = ExceptionEnum.INVALID_PARAM.getErrorCode();
         String errorMessage = e.getBindingResult().getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining());
         return new JsonWrapper<>(errorCode, errorMessage);
+    }
+
+
+    /**
+     * 登录时 用户名不存在抛出的异常
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UnknownAccountException.class)
+    public JsonWrapper<String> handleLoginException(UnknownAccountException e){
+        int errorCode = ExceptionEnum.NOT_REGISTER.getErrorCode();
+        return new JsonWrapper<>(errorCode,"用户名或密码不正确");
+    }
+
+    /**
+     * 登录时 密码不正常抛出的异常
+     */
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(IncorrectCredentialsException.class)
+    public JsonWrapper<String> handleIncorrectException(IncorrectCredentialsException e){
+        int errorCode = ExceptionEnum.NOT_REGISTER.getErrorCode();
+        return new JsonWrapper<>(errorCode,"用户名或密码不正确");
     }
 }
