@@ -1,6 +1,8 @@
 package com.example.photomanager.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.photomanager.bean.dto.AlbumAddInfo;
+import com.example.photomanager.bean.dto.AlbumModifyInfo;
 import com.example.photomanager.bean.entity.Album;
 import com.example.photomanager.bean.vo.AlbumInfo;
 import com.example.photomanager.bean.vo.PhotoInfo;
@@ -41,27 +43,23 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
     }
 
     @Override
-    public Boolean createAlbum(AlbumInfo albumInfo) {
+    public Boolean createAlbum(AlbumAddInfo albumInfo) {
         //模拟当前用户id
         Long userId = QZ_IdUtils.getUserId();
 
         Album album = new Album()
-                .setId(albumInfo.getId())
                 .setName(albumInfo.getName())
-                .setCover(albumInfo.getCover())
                 .setDescription(albumInfo.getDesc())
                 .setUserId(userId);
         return save(album);
     }
 
     @Override
-    public Boolean modifyAlbum(AlbumInfo albumInfo) {
+    public Boolean modifyAlbum(AlbumModifyInfo albumInfo) {
         //模拟当前用户id
         Long userId = QZ_IdUtils.getUserId();
-
         Album album = new Album()
                 .setId(albumInfo.getId())
-                .setCover(albumInfo.getCover())
                 .setDescription(albumInfo.getDesc())
                 .setUserId(userId);
 

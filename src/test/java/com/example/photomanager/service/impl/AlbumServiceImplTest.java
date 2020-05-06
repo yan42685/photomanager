@@ -1,5 +1,7 @@
 package com.example.photomanager.service.impl;
 
+import com.example.photomanager.bean.dto.AlbumAddInfo;
+import com.example.photomanager.bean.dto.AlbumModifyInfo;
 import com.example.photomanager.bean.vo.AlbumInfo;
 import com.example.photomanager.service.AlbumService;
 import org.apache.shiro.util.ThreadContext;
@@ -38,7 +40,7 @@ class AlbumServiceImplTest {
     @Test
     public void testAlbum() {
         //创建相册
-        AlbumInfo album = AlbumInfo.builder().name("夏末秋凉").desc("夏末秋凉").build();
+        AlbumAddInfo album = AlbumAddInfo.builder().name("夏末秋凉").desc("夏末秋凉").build();
         Boolean album1 = albumService.createAlbum(album);
         Assertions.assertTrue(album1);
 
@@ -53,5 +55,21 @@ class AlbumServiceImplTest {
 
         //再次获取相册，应该为null
         Assertions.assertTrue(albumService.getCurrentAlbum().isEmpty());
+    }
+
+    @Test
+    public void testAddAlbum() {
+        //创建相册
+        AlbumAddInfo album = AlbumAddInfo.builder().name("夏末秋凉").desc("夏末秋凉").build();
+        Boolean album1 = albumService.createAlbum(album);
+        Assertions.assertTrue(album1);
+    }
+
+    @Test
+    public void testModifyAlbum() {
+        //修改相册
+        AlbumModifyInfo info = AlbumModifyInfo.builder().id(1257865877768921089L).name("夏末秋凉").desc("简单描述").build();
+        Boolean album = albumService.modifyAlbum(info);
+        Assertions.assertTrue(album);
     }
 }

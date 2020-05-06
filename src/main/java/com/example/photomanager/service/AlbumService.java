@@ -1,5 +1,7 @@
 package com.example.photomanager.service;
 
+import com.example.photomanager.bean.dto.AlbumAddInfo;
+import com.example.photomanager.bean.dto.AlbumModifyInfo;
 import com.example.photomanager.bean.entity.Album;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.photomanager.bean.vo.AlbumInfo;
@@ -22,7 +24,7 @@ public interface AlbumService extends IService<Album> {
      * @param albumInfo 相册详细信息
      * @return 是否创建成功
      */
-    Boolean createAlbum(AlbumInfo albumInfo);
+    Boolean createAlbum(AlbumAddInfo albumInfo);
 
 
     /**
@@ -30,7 +32,7 @@ public interface AlbumService extends IService<Album> {
      * @param album 相册详细信息
      * @return 是否修改成功
      */
-    Boolean modifyAlbum(AlbumInfo album);
+    Boolean modifyAlbum(AlbumModifyInfo album);
 
     /**
      * 根据id删除相册，以及所属的照片

@@ -1,5 +1,7 @@
 package com.example.photomanager.controller;
 
+import com.example.photomanager.bean.dto.AlbumAddInfo;
+import com.example.photomanager.bean.dto.AlbumModifyInfo;
 import com.example.photomanager.bean.vo.AlbumInfo;
 import com.example.photomanager.common.JsonWrapper;
 import com.example.photomanager.service.AlbumService;
@@ -30,13 +32,13 @@ public class AlbumController {
 
     @ApiOperation("新建相册")
     @GetMapping("create")
-    public JsonWrapper<Boolean> createAlbum(AlbumInfo album) {
+    public JsonWrapper<Boolean> createAlbum(AlbumAddInfo album) {
         return new JsonWrapper<>(albumService.createAlbum(album));
     }
 
     @ApiOperation("修改相册")
     @GetMapping("set")
-    public JsonWrapper<Boolean> modifyAlbum(AlbumInfo album) {
+    public JsonWrapper<Boolean> modifyAlbum(AlbumModifyInfo album) {
         return new JsonWrapper<>(albumService.modifyAlbum(album));
     }
 
