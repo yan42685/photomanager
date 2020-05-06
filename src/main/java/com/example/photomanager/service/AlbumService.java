@@ -1,6 +1,7 @@
 package com.example.photomanager.service;
 
 import com.example.photomanager.bean.dto.AlbumAddInfo;
+import com.example.photomanager.bean.dto.AlbumCoverModify;
 import com.example.photomanager.bean.dto.AlbumModifyInfo;
 import com.example.photomanager.bean.entity.Album;
 import com.baomidou.mybatisplus.extension.service.IService;
@@ -40,4 +41,17 @@ public interface AlbumService extends IService<Album> {
      * @return 是否删除成功
      */
     Boolean deleteAlbum(Long id);
+
+    /**
+     *  修改相册Cover
+     * @param album 修改Cover的信息
+     * @return 是否修改成功
+     */
+    Boolean modifyAlbumCover(AlbumCoverModify album);
+
+
+    /**
+     * 在上传图片时候对相册Cover进行更新
+     */
+    Boolean updateAlbumCover(Integer albumId,String photoURL);
 }

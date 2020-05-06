@@ -2,6 +2,7 @@ package com.example.photomanager.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.photomanager.bean.dto.AlbumAddInfo;
+import com.example.photomanager.bean.dto.AlbumCoverModify;
 import com.example.photomanager.bean.dto.AlbumModifyInfo;
 import com.example.photomanager.bean.entity.Album;
 import com.example.photomanager.bean.vo.AlbumInfo;
@@ -79,6 +80,22 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
         photoService.deletePhotos(list);
 
         return removeById(id);
+    }
+
+    @Override
+    public Boolean modifyAlbumCover(AlbumCoverModify album) {
+        Album album1 = getById(album.getId());
+        album1.setCover(album.getCover());
+        return updateById(album1);
+    }
+
+    @Override
+    public Boolean updateAlbumCover(Integer albumId,String photoURL) {
+        Album album = getById(albumId);
+        if (album.getCover() == null) {
+            album.setCover(photoURL);
+        }
+        return updateById(album);
     }
 
 

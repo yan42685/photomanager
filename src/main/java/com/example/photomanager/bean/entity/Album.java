@@ -30,7 +30,7 @@ public class Album implements Serializable {
     @ApiModelProperty(value = "创建相册的用户")
     private Long userId;
 
-    @ApiModelProperty(value = "封面:如果不设置,默认相册里的第一张照片")
+    @ApiModelProperty(value = "封面URL")
     private String cover;
 
 

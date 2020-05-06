@@ -1,6 +1,7 @@
 package com.example.photomanager.controller;
 
 import com.example.photomanager.bean.dto.AlbumAddInfo;
+import com.example.photomanager.bean.dto.AlbumCoverModify;
 import com.example.photomanager.bean.dto.AlbumModifyInfo;
 import com.example.photomanager.bean.vo.AlbumInfo;
 import com.example.photomanager.common.JsonWrapper;
@@ -47,5 +48,11 @@ public class AlbumController {
     @ApiImplicitParam(name = "id", value = "相册id", dataType = "Long")
     public JsonWrapper<Boolean> deleteAlbum(Long id) {
         return new JsonWrapper<>(albumService.deleteAlbum(id));
+    }
+
+    @ApiOperation("修改相册封面")
+    @GetMapping("setCover")
+    public JsonWrapper<Boolean> modifyAlbumCover(AlbumCoverModify album) {
+        return new JsonWrapper<>(albumService.modifyAlbumCover(album));
     }
 }

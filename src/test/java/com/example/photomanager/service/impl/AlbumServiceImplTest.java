@@ -1,6 +1,7 @@
 package com.example.photomanager.service.impl;
 
 import com.example.photomanager.bean.dto.AlbumAddInfo;
+import com.example.photomanager.bean.dto.AlbumCoverModify;
 import com.example.photomanager.bean.dto.AlbumModifyInfo;
 import com.example.photomanager.bean.vo.AlbumInfo;
 import com.example.photomanager.service.AlbumService;
@@ -34,29 +35,6 @@ class AlbumServiceImplTest {
         ThreadContext.bind(securityManager);
     }
 
-    /**
-     * 对相册的增删改查进行测试
-     */
-    @Test
-    public void testAlbum() {
-        //创建相册
-        AlbumAddInfo album = AlbumAddInfo.builder().name("夏末秋凉").desc("夏末秋凉").build();
-        Boolean album1 = albumService.createAlbum(album);
-        Assertions.assertTrue(album1);
-
-        //获取当前用户所有相册
-        List<AlbumInfo> list = albumService.getCurrentAlbum();
-        assertFalse(list.isEmpty());
-
-        //删除获取到的所有相册
-        for (AlbumInfo i : list) {
-            albumService.deleteAlbum(i.getId());
-        }
-
-        //再次获取相册，应该为null
-        Assertions.assertTrue(albumService.getCurrentAlbum().isEmpty());
-    }
-
     @Test
     public void testAddAlbum() {
         //创建相册
@@ -71,5 +49,20 @@ class AlbumServiceImplTest {
         AlbumModifyInfo info = AlbumModifyInfo.builder().id(1257865877768921089L).name("夏末秋凉").desc("简单描述").build();
         Boolean album = albumService.modifyAlbum(info);
         Assertions.assertTrue(album);
+    }
+
+    @Test
+    public void modifyAlbumCover() {
+        //修改相册封面URL
+        AlbumCoverModify coverModify = AlbumCoverModify.builder().id(1257865877768921089L).cover("测试URL").build();
+        Assertions.assertTrue(albumService.modifyAlbumCover(coverModify));
+    }
+
+    @Test
+    public void getCurrentAlbum() {
+        List<AlbumInfo> list = albumService.getCurrentAlbum();
+        for (AlbumInfo i : list) {
+            Assertions.assertNotNull(i.getCover());
+        }
     }
 }

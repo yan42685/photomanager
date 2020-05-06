@@ -32,10 +32,21 @@ public class AlbumInfo implements Serializable {
     private String cover;
 
     public static AlbumInfo parseAlbum(Album album) {
-        return AlbumInfo.builder()
+
+        //封面默认URL
+        String defaultCoverURL = "默认封面URL";
+
+        AlbumInfo albumInfo = AlbumInfo.builder()
                 .id(album.getId())
                 .name(album.getName())
                 .desc(album.getDescription())
-                .cover(album.getCover()).build();
+                .cover(album.getCover())
+                .build();
+
+        if (album.getCover() == null) {
+            albumInfo.setCover(defaultCoverURL);
+        }
+
+        return albumInfo;
     }
 }
