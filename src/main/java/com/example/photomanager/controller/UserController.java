@@ -29,6 +29,11 @@ public class UserController {
         return new JsonWrapper<>(userService.modifyInfo(info));
     }
 
+    @ApiOperation("注销")
+    @GetMapping("logout")
+    public JsonWrapper<Boolean> logout(){
+        return new JsonWrapper<>(userService.logout());
+    }
     @ApiOperation("注册")
     @GetMapping("register")
     public JsonWrapper<UserInfo> register(RegistryInfo info) {
