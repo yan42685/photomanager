@@ -47,4 +47,6 @@ public interface UserService extends IService<User> {
     boolean checkActiveCode(String email, String activeCode);
 
     boolean modifyPassword(String email, String password);
+
+    boolean logout();
 }

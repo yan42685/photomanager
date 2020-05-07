@@ -110,4 +110,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         updateWrapper.set("password", password).eq("email", email);
         return this.update(updateWrapper);
     }
+
+    @Override
+    public boolean logout() {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        return true;
+    }
 }
