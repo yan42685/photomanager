@@ -32,8 +32,6 @@ public class ShiroConfig {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         // 管理自定义realm
         securityManager.setRealm(getRealm());
-        // 管理rememberMeCookie
-        securityManager.setRememberMeManager(getCookieRememberMeManager());
         return securityManager;
     }
 
@@ -49,22 +47,6 @@ public class ShiroConfig {
         return myRealm;
     }
 
-    @Bean
-    public SimpleCookie getSimpleCookie(){
-        SimpleCookie cookie = new SimpleCookie();
-        // 设置cookie的name和时间
-        cookie.setMaxAge(864000);
-        cookie.setName("testRemember");
-        return cookie;
-    }
-
-    @Bean
-    public CookieRememberMeManager getCookieRememberMeManager(){
-        // 设置记住我的cookie
-        CookieRememberMeManager rememberMeManager = new CookieRememberMeManager();
-        rememberMeManager.setCookie(getSimpleCookie());
-        return rememberMeManager;
-    }
 
     @Bean
     public HashedCredentialsMatcher getHashedCrendtialsMatcher(){
