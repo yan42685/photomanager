@@ -62,8 +62,8 @@ public class UserController {
 
     @ApiOperation("登录")
     @GetMapping("login")
-    public JsonWrapper<Boolean> login(String username, String password, Boolean rememberMe) {
-        return new JsonWrapper<>(userService.login(username, password, rememberMe));
+    public JsonWrapper<Boolean> login(String username, String password) {
+        return new JsonWrapper<>(userService.login(username, password));
     }
 
     /**

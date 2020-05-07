@@ -76,16 +76,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public boolean login(String username, String password, Boolean rememberMe) {
+    public boolean login(String username, String password) {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         subject.login(token);
-        if (rememberMe) {
-            // 勾选了记住密码，则记住密码10天
-            token.setRememberMe(true);
-        } else {
-            token.setRememberMe(false);
-        }
         return true;
     }
 

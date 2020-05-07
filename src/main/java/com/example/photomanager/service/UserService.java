@@ -38,10 +38,9 @@ public interface UserService extends IService<User> {
     /**
      * @param username   传入的用户名
      * @param password   传入的密码
-     * @param rememberMe 是否勾选记住密码十天
      * @return 不抛异常，证明登录成功，直接返回true
      */
-    boolean login(String username, String password, Boolean rememberMe);
+    boolean login(String username, String password);
 
     boolean getActiveCode(String email);
 
