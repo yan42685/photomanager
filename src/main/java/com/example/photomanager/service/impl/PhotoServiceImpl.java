@@ -1,14 +1,14 @@
 package com.example.photomanager.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.photomanager.bean.dto.UploadInfo;
+import com.example.photomanager.bean.dto.*;
 import com.example.photomanager.bean.entity.Photo;
-import com.example.photomanager.bean.dto.PhotoESInfo;
 import com.example.photomanager.bean.vo.PhotoInfo;
 import com.example.photomanager.common.KnownException;
 import com.example.photomanager.enums.ExceptionEnum;
 import com.example.photomanager.mapper.PhotoESMapper;
 import com.example.photomanager.mapper.PhotoMapper;
+import com.example.photomanager.service.AlbumService;
 import com.example.photomanager.service.PhotoService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.photomanager.util.FileUtils;
@@ -34,6 +34,9 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
 
     @Autowired
     PhotoESMapper photoESMapper;
+
+    @Autowired
+    AlbumService albumService;
 
     @Override
     public List<PhotoInfo> fuzzyQuery(String message) {
@@ -128,6 +131,9 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
             esInfo.setPhotoId(photo.getId());
             esInfo.setUserId(photo.getUserId());
             addOrUpdatePhotoToES(esInfo);
+
+            //更新封面
+            albumService.updateAlbumCover(photo.getAlbumId(),photo.getUrl());
             return true;
         }
         return false;

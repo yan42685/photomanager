@@ -53,5 +53,5 @@ public interface AlbumService extends IService<Album> {
     /**
      * 在上传图片时候对相册Cover进行更新
      */
-    Boolean updateAlbumCover(Integer albumId,String photoURL);
+    Boolean updateAlbumCover(Long albumId,String photoURL);
 }

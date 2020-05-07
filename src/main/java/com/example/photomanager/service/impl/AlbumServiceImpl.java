@@ -90,7 +90,7 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
     }
 
     @Override
-    public Boolean updateAlbumCover(Integer albumId,String photoURL) {
+    public Boolean updateAlbumCover(Long albumId,String photoURL) {
         Album album = getById(albumId);
         if (album.getCover() == null) {
             album.setCover(photoURL);
