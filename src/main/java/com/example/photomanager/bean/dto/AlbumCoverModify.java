@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.File;
 import java.io.Serializable;
 
 /**
@@ -24,6 +25,6 @@ public class AlbumCoverModify implements Serializable {
     @ApiModelProperty(value = "相册ID")
     private Long id;
 
-    @ApiModelProperty(value = "封面URL")
-    private String cover;
+    @ApiModelProperty(value = "封面图片，图片格式仅支持:png,jpg,gif")
+    private File cover;
 }

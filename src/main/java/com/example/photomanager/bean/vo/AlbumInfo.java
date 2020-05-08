@@ -19,7 +19,7 @@ import java.io.Serializable;
 public class AlbumInfo implements Serializable {
     private static final long serialVersionUID = -8236471644742876626L;
 
-    @ApiModelProperty("相册id，创建相册不用传")
+    @ApiModelProperty("相册id")
     private Long id;
 
     @ApiModelProperty("相册名称")
@@ -28,7 +28,7 @@ public class AlbumInfo implements Serializable {
     @ApiModelProperty("相册描述")
     private String desc;
 
-    @ApiModelProperty("相册封面URL，可以为null")
+    @ApiModelProperty("相册封面URL")
     private String cover;
 
     public static AlbumInfo parseAlbum(Album album) {

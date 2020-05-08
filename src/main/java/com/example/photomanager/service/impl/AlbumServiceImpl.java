@@ -12,6 +12,7 @@ import com.example.photomanager.service.AlbumService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.photomanager.service.PhotoService;
 import com.example.photomanager.util.QZ_IdUtils;
+import com.example.photomanager.util.QiniuUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -62,6 +63,7 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
         Album album = new Album()
                 .setId(albumInfo.getId())
                 .setDescription(albumInfo.getDesc())
+                .setName(albumInfo.getName())
                 .setUserId(userId);
 
         return updateById(album);
@@ -85,7 +87,8 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
     @Override
     public Boolean modifyAlbumCover(AlbumCoverModify album) {
         Album album1 = getById(album.getId());
-        album1.setCover(album.getCover());
+        String url = QiniuUtils.uploadPhoto(album.getCover());
+        album1.setCover(url);
         return updateById(album1);
     }
 

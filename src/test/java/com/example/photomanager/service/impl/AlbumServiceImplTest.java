@@ -52,13 +52,6 @@ class AlbumServiceImplTest {
     }
 
     @Test
-    public void modifyAlbumCover() {
-        //修改相册封面URL
-        AlbumCoverModify coverModify = AlbumCoverModify.builder().id(1257865877768921089L).cover("测试URL").build();
-        Assertions.assertTrue(albumService.modifyAlbumCover(coverModify));
-    }
-
-    @Test
     public void getCurrentAlbum() {
         List<AlbumInfo> list = albumService.getCurrentAlbum();
         for (AlbumInfo i : list) {
