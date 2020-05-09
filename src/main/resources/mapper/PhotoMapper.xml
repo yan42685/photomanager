@@ -10,4 +10,7 @@
         </foreach>
     </select>
 
+    <select id="listAllPhotosInBin" resultType="com.example.photomanager.bean.vo.PhotoInfo">
+        select * from photo where user_id=#{id} and is_recycle=1
+    </select>
 </mapper>

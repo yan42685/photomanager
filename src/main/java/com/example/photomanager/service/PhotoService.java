@@ -76,4 +76,9 @@ public interface PhotoService extends IService<Photo> {
     Boolean restorePhoto(Long id);
 
     Boolean restorePhotos(List<Long> ids);
+
+    /**
+     *  查询回收站中所有图片
+     */
+    List<PhotoInfo> listAllPhotosInBin(Long userId);
 }

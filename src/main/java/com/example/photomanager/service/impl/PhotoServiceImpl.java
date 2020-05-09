@@ -225,4 +225,9 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
         }
         return true;
     }
+
+    @Override
+    public List<PhotoInfo> listAllPhotosInBin(Long userId) {
+        return photoMapper.listAllPhotosInBin(userId);
+    }
 }

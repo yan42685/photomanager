@@ -99,5 +99,12 @@ public class PhotoController {
     public JsonWrapper<Boolean> restorePhotos(@RequestParam("ids") List<Long> ids) {
         return new JsonWrapper<>(photoService.restorePhotos(ids));
     }
+
+    @ApiOperation("获得回收站中所有照片信息")
+    @GetMapping("listAllPhotosInBin")
+    @ApiImplicitParam(name = "id", value = "用户的id", dataType = "Long")
+    public JsonWrapper<List<PhotoInfo>> listAllPhotosInBin(Long userId){
+        return new JsonWrapper<>( photoService.listAllPhotosInBin(userId));
+    }
 }
 
