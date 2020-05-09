@@ -58,4 +58,5 @@ class AlbumServiceImplTest {
             Assertions.assertNotNull(i.getCover());
         }
     }
+
 }

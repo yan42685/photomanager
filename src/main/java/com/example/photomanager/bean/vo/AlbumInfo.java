@@ -43,7 +43,7 @@ public class AlbumInfo implements Serializable {
                 .cover(album.getCover())
                 .build();
 
-        if (album.getCover() == null) {
+        if ("".equals(album.getCover())) {
             albumInfo.setCover(defaultCoverURL);
         }
 

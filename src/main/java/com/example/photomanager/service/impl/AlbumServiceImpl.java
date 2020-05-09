@@ -79,7 +79,9 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
         }
 
         //添加到回收站
-        photoService.deletePhotos(list);
+        if (!list.isEmpty()){
+            photoService.deletePhotos(list);
+        }
 
         return removeById(id);
     }
