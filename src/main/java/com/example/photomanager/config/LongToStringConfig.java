@@ -14,7 +14,7 @@ import java.util.List;
  * springboot
  * 解决 JS 中 Long 的精度丢失问题
  */
-@SpringBootConfiguration
+@SpringBootConfiguration // 先不开启.
 public class LongToStringConfig implements WebMvcConfigurer {
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
