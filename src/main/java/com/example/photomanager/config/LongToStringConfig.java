@@ -1,6 +1,5 @@
 package com.example.photomanager.config;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
@@ -19,8 +18,8 @@ public class LongToStringConfig {
     @Bean
     public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
         ObjectMapper objectMapper = builder.createXmlMapper(false).build();
-        //忽略value为null 时 key的输出
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+//        //忽略value为null 时 key的输出
+//        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         /**
          * 序列换成json时,将所有的long变成string

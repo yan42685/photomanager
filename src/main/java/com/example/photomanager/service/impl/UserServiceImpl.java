@@ -37,12 +37,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private final static int CODE_COUNT = 6;
 
     @Override
-    public boolean modifyInfo(ModifiableUserInfo info) {
+    public UserInfo getInfo() {
+        Long id = QZ_IdUtils.getUserId();
+        User currentUser = getById(id);
+        UserInfo info = new UserInfo();
+        BeanUtil.copyProperties(currentUser, info);
+        return info;
+    }
+
+    @Override
+    public UserInfo modifyInfo(ModifiableUserInfo info) {
         Long id = QZ_IdUtils.getUserId();
         User currentUser = getById(id);
         BeanUtil.copyProperties(info, currentUser, CopyOptions.create().setIgnoreNullValue(true));
         updateById(currentUser);
-        return true;
+        return getInfo();
     }
 
     @Override
