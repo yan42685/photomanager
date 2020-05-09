@@ -199,7 +199,7 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
             photoMapper.deleteById(id);
             deletePhotoToES(id);
         }
-        return false;
+        return true;
     }
 
     /**

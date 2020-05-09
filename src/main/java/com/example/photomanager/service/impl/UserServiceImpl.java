@@ -1,7 +1,10 @@
 package com.example.photomanager.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.bean.copier.CopyOptions;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.photomanager.bean.dto.ModifiableUserInfo;
 import com.example.photomanager.bean.dto.RegistryInfo;
 import com.example.photomanager.bean.entity.User;
@@ -9,7 +12,7 @@ import com.example.photomanager.bean.vo.UserInfo;
 import com.example.photomanager.mapper.UserMapper;
 import com.example.photomanager.service.QZ_MailService;
 import com.example.photomanager.service.UserService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.example.photomanager.util.QZ_IdUtils;
 import com.example.photomanager.util.ServletUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -20,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDateTime;
 import java.util.Random;
 
 
@@ -36,7 +38,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public boolean modifyInfo(ModifiableUserInfo info) {
-        // TODO: 如果用户登录了 那么应该有一个util方法获取当前用户 id
+        Long id = QZ_IdUtils.getUserId();
+        User currentUser = getById(id);
+        BeanUtil.copyProperties(info, currentUser, CopyOptions.create().setIgnoreNullValue(true));
+        updateById(currentUser);
         return true;
     }
 
@@ -47,9 +52,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         info.setPassword(sha256Hash.toHex());
         User user = new User();
         BeanUtils.copyProperties(info, user);
-        user.setCreateTime(LocalDateTime.now());
-        user.setUpdateTime(LocalDateTime.now());
-        user.setAvatarUrl(null);
         boolean result = save(user);
         if (!result) {
             return new UserInfo();
