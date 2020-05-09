@@ -21,7 +21,7 @@ public class UserInfo implements Serializable {
     @ApiModelProperty(value = "邮箱,用于找回密码")
     private String email;
 
-    @ApiModelProperty(value = "base64编码的头像")
+    @ApiModelProperty(value = "头像URL")
     private String avatar;
 
     @ApiModelProperty(value = "昵称")

@@ -9,9 +9,14 @@ import com.example.photomanager.bean.vo.UserInfo;
 
 public interface UserService extends IService<User> {
     /**
+     * 获取当前用户信息
+     */
+    UserInfo getInfo();
+
+    /**
      * 修改用户信息
      */
-    boolean modifyInfo(ModifiableUserInfo info);
+    UserInfo modifyInfo(ModifiableUserInfo info);
 
     /**
      * 注册 返回的头像是预设的
@@ -36,8 +41,8 @@ public interface UserService extends IService<User> {
     boolean checkEmail(String email);
 
     /**
-     * @param username   传入的用户名
-     * @param password   传入的密码
+     * @param username 传入的用户名
+     * @param password 传入的密码
      * @return 不抛异常，证明登录成功，直接返回true
      */
     boolean login(String username, String password);

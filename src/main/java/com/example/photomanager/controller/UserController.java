@@ -12,10 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
-/**
- *
- */
 @Api(tags = "用户行为")
 @RequestMapping("api/user")
 @RestController
@@ -23,17 +19,25 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @ApiOperation("获取用户信息")
+    @GetMapping("info/get")
+    public JsonWrapper<UserInfo> getInfo() {
+        return new JsonWrapper<>(userService.getInfo());
+    }
+
     @ApiOperation("修改用户信息")
     @GetMapping("info/set")
-    public JsonWrapper<Boolean> modifyInfo(ModifiableUserInfo info) {
+    public JsonWrapper<UserInfo> modifyInfo(ModifiableUserInfo info) {
         return new JsonWrapper<>(userService.modifyInfo(info));
     }
 
+
     @ApiOperation("注销")
     @GetMapping("logout")
-    public JsonWrapper<Boolean> logout(){
+    public JsonWrapper<Boolean> logout() {
         return new JsonWrapper<>(userService.logout());
     }
+
     @ApiOperation("注册")
     @GetMapping("register")
     public JsonWrapper<UserInfo> register(RegistryInfo info) {

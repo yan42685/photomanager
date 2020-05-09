@@ -10,13 +10,14 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  * @date 2020/5/7
  **/
 @Configuration
-public class MyWebMvcConfig implements WebMvcConfigurer {
+public class InterceptorConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(getLoginInterceptor()).addPathPatterns("/api/**");
     }
+
     @Bean
-    public LoginInterceptor getLoginInterceptor(){
+    public LoginInterceptor getLoginInterceptor() {
         return new LoginInterceptor();
     }
 }
