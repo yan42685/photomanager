@@ -31,7 +31,7 @@ public class PhotoImplTest {
     public void test1() {
         UploadInfo info = new UploadInfo();
         info.setAlbumId(12L);
-        info.setName("qzz");
+        info.setName("hW");
         info.setUserId(1L);
         info.setFile(new File("D:/p1.png"));
         photoService.uploadPhoto(info);
@@ -52,8 +52,8 @@ public class PhotoImplTest {
     @Test
     public void test3() {
         List<Long> longList = new ArrayList<>();
-        longList.add(1256454204629803009L);
-        longList.add(1256454842503774209L);
+        longList.add(1L);
+        longList.add(1257248337808072706L);
         photoService.deletePhotosFromRecycleBin(longList);
     }
 
