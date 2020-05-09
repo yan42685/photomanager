@@ -2,6 +2,7 @@ package com.example.photomanager.controller;
 
 import com.example.photomanager.bean.dto.ModifiableUserInfo;
 import com.example.photomanager.bean.dto.RegistryInfo;
+import com.example.photomanager.bean.entity.User;
 import com.example.photomanager.bean.vo.UserInfo;
 import com.example.photomanager.common.JsonWrapper;
 import com.example.photomanager.service.UserService;
@@ -111,5 +112,11 @@ public class UserController {
     @GetMapping("password/set")
     public JsonWrapper<Boolean> modifyPassword(String email, String password) {
         return new JsonWrapper<>(userService.modifyPassword(email, password));
+    }
+
+    @ApiOperation("返回当前用户的信息")
+    @GetMapping("getInfo")
+    public JsonWrapper<User> getCurrentUser(){
+        return new JsonWrapper<>(userService.getCurrentUser());
     }
 }
