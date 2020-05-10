@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.Serializable;
@@ -19,7 +20,7 @@ public class UploadInfo implements Serializable {
     private static final long serialVersionUID = 1325117125807346193L;
 
     @ApiModelProperty("图片文件")
-    private File file;
+    private MultipartFile file;
 
     @ApiModelProperty(value = "图片名称")
     private String name;

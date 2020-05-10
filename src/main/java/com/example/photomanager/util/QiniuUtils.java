@@ -11,6 +11,7 @@ import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.BatchStatus;
 import com.qiniu.util.Auth;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -70,6 +71,23 @@ public class QiniuUtils {
             throw new KnownException(ExceptionEnum.FILE_IO_EXCEPTION);
         }
         return baseUrl + name;
+    }
+
+    /**
+     *  字节数组上传文件时调用该方法
+     * @param key: 文件在七牛云中的存储索引
+     */
+    public static String uploadPhoto(byte[] bytes,String key) {
+        Configuration cfg = new Configuration(Region.region0());
+        UploadManager uploadManager = new UploadManager(cfg);
+        try {
+            Auth auth = Auth.create(accessKey, secretKey);
+            String upToken = auth.uploadToken(bucket, key, expireSeconds, null);
+            Response response = uploadManager.put(bytes, key, upToken);
+        }catch (IOException e) {
+            throw new KnownException(ExceptionEnum.FILE_IO_EXCEPTION);
+        }
+        return baseUrl + key;
     }
 
     /**

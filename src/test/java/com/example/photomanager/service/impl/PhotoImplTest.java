@@ -30,10 +30,10 @@ public class PhotoImplTest {
     @Test
     public void test1() {
         UploadInfo info = new UploadInfo();
-        info.setAlbumId(12L);
+        info.setAlbumId(3L);
         info.setName("hW");
         info.setUserId(1L);
-        info.setFile(new File("D:/p1.png"));
+//        info.setFile(new File("D:/p1.png"));
         photoService.uploadPhoto(info);
     }
 

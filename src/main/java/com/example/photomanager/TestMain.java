@@ -19,7 +19,7 @@ public class TestMain {
         info.setAlbumId(12L);
         info.setName("邱朝敲代码");
         info.setUserId(1L);
-        info.setFile(new File("D:/p1.png"));
+//        info.setFile(new File("D:/p1.png"));
         photoService.uploadPhoto(info);
     }
 }

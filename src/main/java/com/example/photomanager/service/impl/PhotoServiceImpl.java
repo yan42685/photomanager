@@ -18,6 +18,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -112,15 +113,20 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
      */
     @Override
     public Boolean uploadPhoto(UploadInfo uploadInfo) {
-        String fileName = uploadInfo.getFile().getName();
+        String fileName = uploadInfo.getFile().getOriginalFilename();
         if (!FileUtils.checkPictureFormat(fileName)) {
             throw new KnownException(ExceptionEnum.IMAGE_UPLOAD_FAIL);
         }
-        String url = QiniuUtils.uploadPhoto(uploadInfo.getFile());
+        String url = null;
+        try {
+            url = QiniuUtils.uploadPhoto(uploadInfo.getFile().getBytes(),fileName);
+        } catch (IOException e) {
+            throw new KnownException(ExceptionEnum.FILE_IO_EXCEPTION);
+        }
         Photo photo = new Photo();
         BeanUtils.copyProperties(uploadInfo, photo);
         photo.setUrl(url);
-        photo.setUserId(QZ_IdUtils.getUserId());
+        photo.setUserId(1L);
         photo.setCreateTime(LocalDateTime.now());
         photo.setUpdateTime(LocalDateTime.now());
         photo.setImageKey(fileName);

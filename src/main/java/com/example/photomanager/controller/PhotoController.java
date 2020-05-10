@@ -46,15 +46,15 @@ public class PhotoController {
     }
 
     @ApiOperation("上传图片,图片格式仅支持:png,jpg,gif")
-    @GetMapping("upload")
+    @PostMapping("upload")
     public JsonWrapper<Boolean> uploadPhoto(UploadInfo uploadInfo) {
         return new JsonWrapper<>(photoService.uploadPhoto(uploadInfo));
     }
 
     @ApiOperation("下载图片,默认下载路径:D:/photos/")
-    @GetMapping("download/{id}")
+    @PostMapping("download")
     @ApiImplicitParam(name = "id", value = "图片的id", dataType = "Long")
-    public JsonWrapper<Boolean> downloadPhoto(@PathVariable("id") Long id) {
+    public JsonWrapper<Boolean> downloadPhoto(@RequestParam("id") Long id) {
         return new JsonWrapper<>(photoService.downloadPhoto(id));
     }
 
@@ -102,7 +102,7 @@ public class PhotoController {
 
     @ApiOperation("获得回收站中所有照片信息")
     @GetMapping("listAllPhotosInBin")
-    @ApiImplicitParam(name = "id", value = "用户的id", dataType = "Long")
+    @ApiImplicitParam(name = "userId", value = "用户的id", dataType = "Long")
     public JsonWrapper<List<PhotoInfo>> listAllPhotosInBin(Long userId){
         return new JsonWrapper<>( photoService.listAllPhotosInBin(userId));
     }
