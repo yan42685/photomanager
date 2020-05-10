@@ -51,7 +51,7 @@ public class AlbumController {
     }
 
     @ApiOperation("修改相册封面")
-    @GetMapping("setCover")
+    @PostMapping("setCover")
     public JsonWrapper<Boolean> modifyAlbumCover(AlbumCoverModify album) {
         return new JsonWrapper<>(albumService.modifyAlbumCover(album));
     }
