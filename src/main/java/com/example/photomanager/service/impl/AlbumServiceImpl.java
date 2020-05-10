@@ -7,15 +7,19 @@ import com.example.photomanager.bean.dto.AlbumModifyInfo;
 import com.example.photomanager.bean.entity.Album;
 import com.example.photomanager.bean.vo.AlbumInfo;
 import com.example.photomanager.bean.vo.PhotoInfo;
+import com.example.photomanager.common.KnownException;
+import com.example.photomanager.enums.ExceptionEnum;
 import com.example.photomanager.mapper.AlbumMapper;
 import com.example.photomanager.service.AlbumService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.example.photomanager.service.PhotoService;
+import com.example.photomanager.util.FileUtils;
 import com.example.photomanager.util.QZ_IdUtils;
 import com.example.photomanager.util.QiniuUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -88,8 +92,18 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
 
     @Override
     public Boolean modifyAlbumCover(AlbumCoverModify album) {
+        //上传文件到七牛云
+        String fileName = album.getCover().getOriginalFilename();
+        if (!FileUtils.checkPictureFormat(fileName)) {
+            throw new KnownException(ExceptionEnum.IMAGE_UPLOAD_FAIL);
+        }
+        String url = null;
+        try {
+            url = QiniuUtils.uploadPhoto(album.getCover().getBytes(),fileName);
+        } catch (IOException e) {
+            throw new KnownException(ExceptionEnum.FILE_IO_EXCEPTION);
+        }
         Album album1 = getById(album.getId());
-        String url = QiniuUtils.uploadPhoto(album.getCover());
         album1.setCover(url);
         return updateById(album1);
     }

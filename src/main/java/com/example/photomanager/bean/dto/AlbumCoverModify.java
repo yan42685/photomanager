@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.Serializable;
@@ -26,5 +27,5 @@ public class AlbumCoverModify implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "封面图片，图片格式仅支持:png,jpg,gif")
-    private File cover;
+    private MultipartFile cover;
 }
