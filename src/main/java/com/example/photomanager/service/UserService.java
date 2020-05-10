@@ -54,4 +54,6 @@ public interface UserService extends IService<User> {
     boolean modifyPassword(String email, String password);
 
     boolean logout();
+
+    User getCurrentUser();
 }

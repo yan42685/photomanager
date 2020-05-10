@@ -128,4 +128,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         subject.logout();
         return true;
     }
+
+    @Override
+    public User getCurrentUser() {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("id",QZ_IdUtils.getUserId());
+        User user = getOne(wrapper);
+        // 当前用户的密码设置为空，不返回给前端
+        user.setPassword(null);
+        return user;
+    }
 }
