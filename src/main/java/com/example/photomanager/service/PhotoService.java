@@ -5,7 +5,11 @@ import com.example.photomanager.bean.entity.Photo;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.example.photomanager.bean.dto.PhotoESInfo;
 import com.example.photomanager.bean.vo.PhotoInfo;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -63,7 +67,7 @@ public interface PhotoService extends IService<Photo> {
 
     Boolean uploadPhoto(UploadInfo photoInfo);
 
-    Boolean downloadPhoto(Long id);
+    Boolean downloadPhoto(Long id, HttpServletRequest request, HttpServletResponse response);
 
     Boolean deletePhoto(Long id);
 

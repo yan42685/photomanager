@@ -11,6 +11,11 @@ import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.BatchStatus;
 import com.qiniu.util.Auth;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -90,27 +95,7 @@ public class QiniuUtils {
         return baseUrl + key;
     }
 
-    /**
-     * @param url : 图片链接
-     *            默认下载路径 : d:/photos/
-     *            文件的下载,待实现:多线程下载
-     */
-    public static void downloadPhoto(String url) {
-        // 得到文件名
-        String name = FileUtils.getFileNameFromUrl(url);
-        try {
-            URL u = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection) u.openConnection();
-            InputStream in = connection.getInputStream();
-            FileUtils.createDir(downloadDir);
-            File file = new File(downloadDir + name);
-            OutputStream out = new FileOutputStream(file);
-            FileUtils.fileInput(in, out);
-        } catch (IOException e) {
-            throw new KnownException(ExceptionEnum.FILE_IO_EXCEPTION);
-        }
-        System.out.println("下载成功");
-    }
+
 
     /**
      * 删除存储空间的文件

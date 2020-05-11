@@ -16,9 +16,17 @@ import com.example.photomanager.util.QZ_IdUtils;
 import com.example.photomanager.util.QiniuUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -151,9 +159,34 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
      * @param id 图片id
      */
     @Override
-    public Boolean downloadPhoto(Long id) {
-        String url = photoMapper.selectById(id).getUrl();
-        QiniuUtils.downloadPhoto(url);
+    public Boolean downloadPhoto(Long id, HttpServletRequest request, HttpServletResponse response) {
+        InputStream in = null;
+        OutputStream out = null;
+        try{
+            String url = photoMapper.selectById(id).getUrl();
+            String key = photoMapper.selectById(id).getImageKey();
+            URL u = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) u.openConnection();
+            in = connection.getInputStream();
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition","attachement;filename="+key);
+            out = response.getOutputStream();
+
+            byte[] Buffer = new byte[2048];
+            int size = 0;
+            while((size=in.read(Buffer)) != -1){
+                out.write(Buffer, 0, size); //将每次读取到的数据写入客户端
+            }
+        }catch (IOException e){
+            throw new KnownException(ExceptionEnum.FILE_IO_EXCEPTION);
+        }finally {
+            try {
+                in.close();
+                out.close();
+            } catch (IOException e) {
+                throw new KnownException(ExceptionEnum.FILE_IO_EXCEPTION);
+            }
+        }
         return true;
     }
 

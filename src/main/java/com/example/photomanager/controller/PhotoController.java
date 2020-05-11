@@ -8,8 +8,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -51,11 +56,11 @@ public class PhotoController {
         return new JsonWrapper<>(photoService.uploadPhoto(uploadInfo));
     }
 
-    @ApiOperation("下载图片,默认下载路径:D:/photos/")
-    @PostMapping("download")
+    @ApiOperation("下载图片")
+    @PostMapping(value = "download")
     @ApiImplicitParam(name = "id", value = "图片的id", dataType = "Long")
-    public JsonWrapper<Boolean> downloadPhoto(@RequestParam("id") Long id) {
-        return new JsonWrapper<>(photoService.downloadPhoto(id));
+    public void downloadPhoto(@RequestParam("id") Long id, HttpServletRequest request, HttpServletResponse response) {
+        photoService.downloadPhoto(id,request,response);
     }
 
     @ApiOperation("删除图片到回收站")

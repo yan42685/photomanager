@@ -42,7 +42,7 @@ public class PhotoImplTest {
      */
     @Test
     public void test2() {
-        photoService.downloadPhoto(1256239696246300674L);
+//        photoService.downloadPhoto(1L);
     }
 
 
