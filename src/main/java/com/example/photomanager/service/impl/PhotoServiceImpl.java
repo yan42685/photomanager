@@ -134,7 +134,6 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
         Photo photo = new Photo();
         BeanUtils.copyProperties(uploadInfo, photo);
         photo.setUrl(url);
-        photo.setUserId(1L);
         photo.setCreateTime(LocalDateTime.now());
         photo.setUpdateTime(LocalDateTime.now());
         photo.setImageKey(fileName);
