@@ -51,10 +51,16 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     public List<PhotoInfo> fuzzyQuery(String message) {
 
         List<PhotoESInfo> photoESInfos = fuzzyQueryES(message);
+        if (photoESInfos == null) {
+            return null;
+        }
         //封装成VO对象
         List<PhotoInfo> photoInfos = new LinkedList<>();
         for (PhotoESInfo i : photoESInfos) {
-            photoInfos.add(queryById(i.getPhotoId()));
+            PhotoInfo photoInfo = queryById(i.getPhotoId());
+            if (photoInfo!= null) {
+                photoInfos.add(photoInfo);
+            }
         }
         return photoInfos;
     }
@@ -62,7 +68,7 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     @Override
     public List<PhotoESInfo> fuzzyQueryES(String message) {
         //获取当前用户id
-        Long currentUserid = 1L;
+        Long currentUserid = QZ_IdUtils.getUserId();
         return photoESMapper.findByUserIdAndDescLike(currentUserid, message);
     }
 
@@ -103,7 +109,7 @@ public class PhotoServiceImpl extends ServiceImpl<PhotoMapper, Photo> implements
     public Boolean modifyPhoto(PhotoInfo photoInfo) {
         //更新数据库
         Photo photo = getById(photoInfo.getId());
-        photo.setName(photoInfo.getName()).setUpdateTime(LocalDateTime.now());
+        photo.setName(photoInfo.getName()).setAlbumId(photoInfo.getAlbumId()).setUpdateTime(LocalDateTime.now());
         boolean b = updateById(photo);
         //更新ES
         PhotoESInfo esInfo = PhotoESInfo.builder().photoId(photo.getId())

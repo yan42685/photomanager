@@ -35,6 +35,9 @@ public class PhotoInfo implements Serializable {
     private Long albumId;
 
     public static PhotoInfo parsePhoto(Photo photo) {
+        if (photo == null) {
+            return null;
+        }
         return PhotoInfo.builder().id(photo.getId())
                 .name(photo.getName())
                 .url(photo.getUrl())

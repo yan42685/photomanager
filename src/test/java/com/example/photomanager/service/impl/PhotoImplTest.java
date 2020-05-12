@@ -74,14 +74,10 @@ public class PhotoImplTest {
      */
     @Test
     public void ESTest() {
-        //增加修改
-        PhotoESInfo info = PhotoESInfo.builder().photoId(1L).userId(1L).desc("第二张图片").build();
-        photoService.addOrUpdatePhotoToES(info);
-        //模糊查询
-        List<PhotoESInfo> list = photoService.fuzzyQueryES("二");
-        Assertions.assertNotNull(list);
-        //删除刚创建的数据，防止数据污染
-        Assertions.assertTrue(photoService.deletePhotoToES(1L));
+        List<PhotoESInfo> list = photoService.fuzzyQueryES("2");
+        for (PhotoESInfo photoESInfo : list) {
+            System.out.println(photoESInfo);
+        }
     }
 
     /**
