@@ -21,7 +21,13 @@ public interface AlbumService extends IService<Album> {
     List<AlbumInfo> getCurrentAlbum();
 
     /**
+     * 获取相册个数
+     */
+    Integer getAlbumCount();
+
+    /**
      * 创建相册
+     *
      * @param albumInfo 相册详细信息
      * @return 是否创建成功
      */
@@ -30,6 +36,7 @@ public interface AlbumService extends IService<Album> {
 
     /**
      * 修改相册
+     *
      * @param album 相册详细信息
      * @return 是否修改成功
      */
@@ -37,13 +44,15 @@ public interface AlbumService extends IService<Album> {
 
     /**
      * 根据id删除相册，以及所属的照片
+     *
      * @param id 相册id
      * @return 是否删除成功
      */
     Boolean deleteAlbum(Long id);
 
     /**
-     *  修改相册Cover
+     * 修改相册Cover
+     *
      * @param album 修改Cover的信息
      * @return 是否修改成功
      */
@@ -53,5 +62,5 @@ public interface AlbumService extends IService<Album> {
     /**
      * 在上传图片时候对相册Cover进行更新
      */
-    Boolean updateAlbumCover(Long albumId,String photoURL);
+    Boolean updateAlbumCover(Long albumId, String photoURL);
 }

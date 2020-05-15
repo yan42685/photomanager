@@ -31,10 +31,11 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
 
     @Autowired
     PhotoService photoService;
+    @Autowired
+    AlbumMapper albumMapper;
 
     @Override
     public List<AlbumInfo> getCurrentAlbum() {
-        //模拟当前用户id
         Long userId = QZ_IdUtils.getUserId();
 
         QueryWrapper<Album> wrapper = new QueryWrapper<>();
@@ -47,6 +48,13 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
         }
         return albumInfos;
     }
+
+    @Override
+    public Integer getAlbumCount() {
+        Long userId = QZ_IdUtils.getUserId();
+        return albumMapper.getAlbumCount(userId);
+    }
+
 
     @Override
     public Boolean createAlbum(AlbumAddInfo albumInfo) {
@@ -83,7 +91,7 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
         }
 
         //添加到回收站
-        if (!list.isEmpty()){
+        if (!list.isEmpty()) {
             photoService.deletePhotos(list);
         }
 
@@ -99,7 +107,7 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
         }
         String url = null;
         try {
-            url = QiniuUtils.uploadPhoto(album.getCover().getBytes(),fileName);
+            url = QiniuUtils.uploadPhoto(album.getCover().getBytes(), fileName);
         } catch (IOException e) {
             throw new KnownException(ExceptionEnum.FILE_IO_EXCEPTION);
         }
@@ -109,7 +117,7 @@ public class AlbumServiceImpl extends ServiceImpl<AlbumMapper, Album> implements
     }
 
     @Override
-    public Boolean updateAlbumCover(Long albumId,String photoURL) {
+    public Boolean updateAlbumCover(Long albumId, String photoURL) {
         Album album = getById(albumId);
         if (album.getCover() == null) {
             album.setCover(photoURL);

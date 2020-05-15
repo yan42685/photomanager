@@ -10,6 +10,7 @@ import com.example.photomanager.bean.dto.RegistryInfo;
 import com.example.photomanager.bean.entity.User;
 import com.example.photomanager.bean.vo.UserInfo;
 import com.example.photomanager.mapper.UserMapper;
+import com.example.photomanager.service.AlbumService;
 import com.example.photomanager.service.QZ_MailService;
 import com.example.photomanager.service.UserService;
 import com.example.photomanager.util.QZ_IdUtils;
@@ -30,6 +31,8 @@ import java.util.Random;
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
     @Autowired
     private QZ_MailService mailService;
+    @Autowired
+    private AlbumService albumService;
 
     /**
      * 验证码的位数
@@ -42,6 +45,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         User currentUser = getById(id);
         UserInfo info = new UserInfo();
         BeanUtil.copyProperties(currentUser, info);
+        info.setAlbumCount(albumService.getCurrentAlbum().size());
         return info;
     }
 
@@ -132,7 +136,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public User getCurrentUser() {
         QueryWrapper<User> wrapper = new QueryWrapper<>();
-        wrapper.eq("id",QZ_IdUtils.getUserId());
+        wrapper.eq("id", QZ_IdUtils.getUserId());
         User user = getOne(wrapper);
         // 当前用户的密码设置为空，不返回给前端
         user.setPassword(null);

@@ -27,4 +27,6 @@ public class UserInfo implements Serializable {
     @ApiModelProperty(value = "昵称")
     private String nickname;
 
+    @ApiModelProperty(value = "相册总数")
+    private Integer albumCount;
 }
