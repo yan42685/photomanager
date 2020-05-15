@@ -10,9 +10,6 @@ class PhotomanagerApplicationTests {
 
     @Test
     void contextLoads() {
-        PhotoInfo info = PhotoInfo.builder().id(1L).name("11").build();
-        info.setName("22");
-        System.out.println(info);
     }
 
 }
