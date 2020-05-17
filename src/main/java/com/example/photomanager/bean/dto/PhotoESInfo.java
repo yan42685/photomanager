@@ -27,6 +27,6 @@ public class PhotoESInfo implements Serializable {
     private Long photoId;
     @Field(type = FieldType.Long)
     private Long userId;
-    @Field(type = FieldType.Keyword)
+    @Field(type = FieldType.Text)
     private String desc;
 }
